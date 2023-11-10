@@ -1,0 +1,16 @@
+@import '@fontsource/fira-mono';
+
+:root {
+	--color-bg-1: rgb(30, 30, 30);
+	--color-bg-2: rgb(40, 40, 40);
+	--color-border: rgb(60, 60, 60);
+	--color-accent: rgb(170, 2, 250);
+}
+
+body {
+	min-height: 100vh;
+	margin: 0;
+	background-attachment: fixed;
+	background-color: var(--color-bg-1);
+	background-size: 100vw 100vh;
+}
