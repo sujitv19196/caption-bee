@@ -3,7 +3,6 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	console.log(data.captions);
 
 	let mouseSplitterDistance: number;
 	let mouseNearSplitter = false;
