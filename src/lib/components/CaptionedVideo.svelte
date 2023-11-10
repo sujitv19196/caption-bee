@@ -23,22 +23,52 @@
     })
 </script>
 
-<video
-    id="videoPlayer"
-    hidden={hidden}
-    controls
-    src={videoSrc}
-    bind:this={video}
-    bind:currentTime
-    bind:paused
-    bind:ended
-    bind:volume
-/>
+<div class="video-container">
+    <video
+        id="videoPlayer"
+        hidden={hidden}
+        controls
+        src={videoSrc}
+        bind:this={video}
+        bind:currentTime
+        bind:paused
+        bind:ended
+        bind:volume
+    />
+    <div class="captions-container">
+        {#if !_captions.length}
+            <p>No captions available</p>
+        {:else}
+            {#each _captions as caption}
+                <div class="caption">{caption.text}</div>
+            {/each}
+        {/if}
+    </div>
+</div>
+
+<button>asdfasdf</button>
 
 <style>
+    .video-container {
+        display: flex;
+    }
+
     #videoPlayer {
-        width: calc(100% - 20px);
+        width: calc(70% - 20px);
         margin: 10px;
         border-radius: 10px;
+    }
+
+    .captions-container {
+        width: 30%;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        overflow-y: auto;
+        background-color: #f0f0f0;
+    }
+
+    .caption {
+        margin-bottom: 10px;
     }
 </style>
