@@ -36,6 +36,10 @@
         bind:volume
     />
     <div class="captions-container">
+        <span>      
+            <button>Undo</button> <button>Redo</button>
+            <button> Show Original </button> 
+        </span>
         {#if !_captions.length}
             <p>No captions available</p>
         {:else}
@@ -46,7 +50,7 @@
     </div>
 </div>
 
-<button>asdfasdf</button>
+
 
 <style>
     .video-container {
