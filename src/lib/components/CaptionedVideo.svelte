@@ -3,6 +3,7 @@
 	import { Caption, type SerializedCaption } from '$lib/utils/captions';
 	import CaptionTimestamp from './CaptionTimestamp.svelte';
 	import { Video } from '$lib/utils/video';
+	import CaptionBox from './CaptionBox.svelte';
 
 	export let videoSrc: string;
 	export let captions: SerializedCaption[];
@@ -62,17 +63,7 @@
 			<p>No captions available</p>
 		{:else if vid.duration}
 			{#each vid.captions as _, idx}
-				<button class="caption" on:click={() => setIdxEditing(idx)}>
-					{#if idxEditing == idx}
-						<CaptionTimestamp
-							bind:vid
-							{idx}
-							prevCaption={idx == 0 ? undefined : vid.captions[idx - 1]}
-							nextCaption={idx == vid.captions.length - 1 ? undefined : vid.captions[idx + 1]}
-						/>
-					{/if}
-					{vid.captions[idx].text}
-				</button>
+				<CaptionBox bind:vid {idx} bind:idxEditing />
 			{/each}
 		{/if}
 	</div>
@@ -101,10 +92,5 @@
 		border-radius: 10px;
 		overflow-y: auto;
 		background-color: #f0f0f0;
-	}
-
-	.caption {
-		margin-bottom: 10px;
-		cursor: pointer;
 	}
 </style>
