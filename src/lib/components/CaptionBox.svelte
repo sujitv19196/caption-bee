@@ -38,6 +38,13 @@
 	console.log('original text: ', originalText);
 </script>
 
+<head>
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+		rel="stylesheet"
+	/>
+</head>
+
 <button class="caption" on:click={() => setIdxEditing(idx)}>
 	{#if idxEditing == idx}
 		<CaptionTimestamp
@@ -48,7 +55,12 @@
 		/>
 	{/if}
 	<span class="toolbar">
-		<button on:click={() => undo()}>Undo</button> <button on:click={() => redo()}>Redo</button>
+		<button on:click={() => undo()}>
+			<i class="fa fa-undo" aria-hidden="true" />
+		</button>
+		<button on:click={() => redo()}>
+			<i class="fa fa-redo" aria-hidden="true" />
+		</button>
 		<button on:click={() => reset()}> Reset </button>
 	</span>
 	<InPlaceEdit bind:value={editor.captions[idx].text} on:submit={changeCaption} />
