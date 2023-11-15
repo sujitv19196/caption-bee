@@ -40,6 +40,7 @@ export class Caption {
 
     set text(value: string) {
         this._text = value;
+        this._vttCue.text = value;
     }
 
     get originalText(): string {

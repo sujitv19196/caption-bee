@@ -1,6 +1,6 @@
 import type { Caption } from "./captions";
 
-export class Video {
+export class Editor {
   private _src: string;
   private _duration: number | undefined;
   private _captions: Caption[];
@@ -21,7 +21,7 @@ export class Video {
   get duration(): number | undefined {
     return this._duration;
   }
-  
+
   set duration(value: number) {
     this._duration = value;
   }

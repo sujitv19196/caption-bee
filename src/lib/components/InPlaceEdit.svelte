@@ -1,16 +1,13 @@
-<script>
-	import { createEventDispatcher, onMount } from 'svelte';
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 
-	export let value,
-		required = true;
+	export let value: string;
+	export let required = true;
 
 	const dispatch = createEventDispatcher();
-	let editing = false,
-		original;
-
-	onMount(() => {
-		original = value;
-	});
+	let editing = false;
+	const original = value;
+	console.log(value);
 
 	function edit() {
 		editing = true;
@@ -24,7 +21,7 @@
 		editing = false;
 	}
 
-	function keydown(event) {
+	function keydown(event: KeyboardEvent) {
 		if (event.key == 'Escape') {
 			event.preventDefault();
 			value = original;
@@ -32,7 +29,7 @@
 		}
 	}
 
-	function focus(element) {
+	function focus(element: HTMLElement) {
 		element.focus();
 	}
 </script>

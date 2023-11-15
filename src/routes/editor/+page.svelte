@@ -1,8 +1,14 @@
 <script lang="ts">
 	import CaptionedVideo from '$lib/components/CaptionedVideo.svelte';
+	import CaptionsPane from '$lib/components/CaptionsPane.svelte';
+	import { Caption, type SerializedCaption } from '$lib/utils/captions';
+	import { Editor } from '$lib/utils/editor';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	const captions = Caption.deserializeCaptions(data.captions);
+	const editor = new Editor('', captions);
 
 	let mouseSplitterDistance: number;
 	let mouseNearSplitter = false;
@@ -23,7 +29,7 @@
 	function onMouseMove(e: MouseEvent) {
 		if (!splitterMoving) {
 			mouseSplitterDistance = Math.abs(e.clientX - leftPaneWidth);
-			mouseNearSplitter = (mouseSplitterDistance <= 3);
+			mouseNearSplitter = mouseSplitterDistance <= 3;
 			if (mouseNearSplitter) {
 				document.documentElement.style.cursor = 'col-resize';
 			} else {
@@ -46,31 +52,19 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<svelte:window
-	on:mousedown={onMouseDown}
-	on:mouseup={onMouseUp}
-	on:mousemove={onMouseMove}
-/>
+<svelte:window on:mousedown={onMouseDown} on:mouseup={onMouseUp} on:mousemove={onMouseMove} />
 
 <div id="content">
 	<div id="leftPane" style="width: {leftPaneWidth}px;">
-		<CaptionedVideo
-			videoSrc="/movie.mp4"
-			captions={data.captions}
-			hidden={leftPaneHidden}
-		>
-		</CaptionedVideo>
+		<CaptionedVideo videoSrc="/movie.mp4" {editor} hidden={leftPaneHidden} />
 	</div>
 
-	<div id={mouseNearSplitter ? 'splitterHover' : 'splitter'}>
-
-	</div>
+	<div id={mouseNearSplitter ? 'splitterHover' : 'splitter'} />
 
 	<div id="rightPane">
-
+		<CaptionsPane {editor} />
 	</div>
 </div>
-
 
 <style>
 	#content {

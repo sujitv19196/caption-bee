@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Caption, type SerializedCaption } from '$lib/utils/captions';
-	import CaptionTimestamp from './CaptionTimestamp.svelte';
-	import { Video } from '$lib/utils/video';
-	import CaptionBox from './CaptionBox.svelte';
+	import type { Editor } from '$lib/utils/editor';
 
+	export let editor: Editor;
 	export let videoSrc: string;
-	export let captions: SerializedCaption[];
 	export let hidden: boolean;
 
 	let video: HTMLVideoElement;
@@ -15,82 +12,34 @@
 	let ended: boolean;
 	let volume: number;
 
-	// Use the video src & captions to create a Video object that contains
-	// useful metadata for editing individual caption timestamps --> edit the
-	// Captions within the video object --> send the final Video object into
-	// some function that writes the new captions to a file
-	let vid = new Video(videoSrc, Caption.deserializeCaptions(captions));
-	let idxEditing: number | undefined = undefined;
-
 	onMount(() => {
 		const track = video.addTextTrack('captions', 'Captions', 'en');
 		track.mode = 'showing';
-		for (const caption of vid.captions) {
+		for (const caption of editor.captions) {
 			track.addCue(caption.vttCue);
 		}
 	});
-
-	const setIdxEditing = (idx: number) => {
-		idxEditing = idx;
-	};
-
-	$: {
-		console.log('captions changed', vid.captions);
-	}
 </script>
 
-<div class="video-container">
-	<video
-		id="video-player"
-		{hidden}
-		controls
-		src={videoSrc}
-		bind:this={video}
-		bind:currentTime
-		bind:paused
-		bind:ended
-		bind:volume
-		bind:duration={vid.duration}
-	>
-		<track kind="captions" />
-	</video>
-	<div class="captions-container">
-		<span class="toolbar">
-			<button>Undo</button> <button>Redo</button>
-			<button> Show Original </button>
-		</span>
-		{#if !vid.captions.length}
-			<p>No captions available</p>
-		{:else if vid.duration}
-			{#each vid.captions as _, idx}
-				<CaptionBox bind:vid {idx} bind:idxEditing />
-			{/each}
-		{/if}
-	</div>
-</div>
+<video
+	id="video-player"
+	{hidden}
+	controls
+	src={videoSrc}
+	bind:this={video}
+	bind:currentTime
+	bind:paused
+	bind:ended
+	bind:volume
+	bind:duration={editor.duration}
+>
+	<track kind="captions" />
+</video>
 
 <style>
-	.video-container {
-		display: flex;
-	}
-
-	.toolbar {
-		display: block;
-		margin-bottom: 10px;
-	}
-
 	#video-player {
-		width: calc(70% - 20px);
+		width: calc(100% - 20px);
 		margin: 10px;
 		border-radius: 10px;
-	}
-
-	.captions-container {
-		width: 30%;
-		margin: 10px;
-		padding: 10px;
-		border-radius: 10px;
-		overflow-y: auto;
-		background-color: #f0f0f0;
 	}
 </style>

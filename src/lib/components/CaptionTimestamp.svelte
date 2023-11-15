@@ -1,21 +1,21 @@
 <script lang="ts">
 	import type { Caption } from '$lib/utils/captions';
-	import type { Video } from '$lib/utils/video';
+	import type { Editor } from '$lib/utils/editor';
 	import RangeSlider from 'svelte-range-slider-pips';
 
-	export let vid: Video;
+	export let editor: Editor;
 	export let idx: number;
 	export let prevCaption: Caption | undefined;
 	export let nextCaption: Caption | undefined;
 
-	let caption = vid.captions[idx];
+	let caption = editor.captions[idx];
 	let lower_bound = prevCaption?.endTime ?? 0;
-	let upper_bound = nextCaption?.startTime ?? vid.duration;
+	let upper_bound = nextCaption?.startTime ?? editor.duration;
 	let range = [caption.startTime, caption.endTime];
 
 	const saveRange = () => {
-		vid.captions[idx].startTime = range[0];
-		vid.captions[idx].endTime = range[1];
+		editor.captions[idx].startTime = range[0];
+		editor.captions[idx].endTime = range[1];
 	};
 
 	const formatTime = (seconds: number) => {
@@ -24,7 +24,7 @@
 
 	$: {
 		lower_bound = prevCaption?.endTime ?? 0;
-		upper_bound = nextCaption?.startTime ?? vid.duration;
+		upper_bound = nextCaption?.startTime ?? editor.duration;
 	}
 </script>
 
