@@ -16,11 +16,17 @@
 	};
 
 	function undo() {
+		console.log('undo function');
+		console.log(editingPointer, editingHistory);
+
 		editingPointer = Math.max(editingPointer - 1, 0);
 		editor.captions[idx].text = editingHistory[editingPointer];
 	}
 
 	function redo() {
+		console.log('redo function');
+		console.log(editingPointer, editingHistory);
+
 		editingPointer = Math.min(editingPointer + 1, editingHistory.length - 1);
 		editor.captions[idx].text = editingHistory[editingPointer];
 	}
@@ -30,12 +36,19 @@
 	}
 
 	function changeCaption(e: CustomEvent) {
-		editingHistory.push(e.detail.newValue);
+		console.log('New value: ', editor.captions[idx].text);
+		console.log('Old value: ', editingHistory.at(-1));
+
+		if (editor.captions[idx].text == editingHistory.at(-1)) {
+			return;
+		}
+
+		editingHistory.push(editor.captions[idx].text);
 		editingPointer = editingHistory.length - 1;
 	}
 
 	let originalText = editor.captions[idx].text;
-	console.log('original text: ', originalText);
+	// console.log('original text: ', originalText);
 </script>
 
 <head>
@@ -53,16 +66,18 @@
 			prevCaption={idx == 0 ? undefined : editor.captions[idx - 1]}
 			nextCaption={idx == editor.captions.length - 1 ? undefined : editor.captions[idx + 1]}
 		/>
+
+		<span class="toolbar">
+			<button on:click={() => undo()}>
+				<i class="fa fa-undo" aria-hidden="true" />
+			</button>
+			<button on:click={() => redo()}>
+				<i class="fa fa-redo" aria-hidden="true" />
+			</button>
+			<button on:click={() => reset()}> Reset </button>
+		</span>
 	{/if}
-	<span class="toolbar">
-		<button on:click={() => undo()}>
-			<i class="fa fa-undo" aria-hidden="true" />
-		</button>
-		<button on:click={() => redo()}>
-			<i class="fa fa-redo" aria-hidden="true" />
-		</button>
-		<button on:click={() => reset()}> Reset </button>
-	</span>
+
 	<InPlaceEdit bind:value={editor.captions[idx].text} on:submit={changeCaption} />
 </button>
 
@@ -70,5 +85,6 @@
 	.caption {
 		margin-bottom: 10px;
 		cursor: pointer;
+		width: 100%;
 	}
 </style>
