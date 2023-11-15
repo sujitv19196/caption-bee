@@ -25,10 +25,6 @@
 </script>
 
 <div class="captions-container">
-	<span class="toolbar">
-		<button>Undo</button> <button>Redo</button>
-		<button> Show Original </button>
-	</span>
 	<span class="captions">
 		{#if !editor.captions.length}
 			<p>No captions available</p>
