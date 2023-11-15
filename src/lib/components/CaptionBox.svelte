@@ -8,16 +8,34 @@
 	export let idxEditing: number | undefined;
 	console.log(idx);
 
+	let editingHistory: string[] = [editor.captions[idx].text];
+	let editingPointer: number = 0;
+
 	const setIdxEditing = (idx: number) => {
 		idxEditing = idx;
 	};
 
-	// function changeCaption(field: string) {
-	// 	return ({ detail: newValue }) => {
-	// 		// IRL: POST value to server here
-	// 		console.log(`updated ${field}, new value is: "${newValue}"`);
-	// 	};
-	// }
+	function undo() {
+		editingPointer = Math.max(editingPointer - 1, 0);
+		editor.captions[idx].text = editingHistory[editingPointer];
+	}
+
+	function redo() {
+		editingPointer = Math.min(editingPointer + 1, editingHistory.length - 1);
+		editor.captions[idx].text = editingHistory[editingPointer];
+	}
+
+	function reset() {
+		editor.captions[idx].text = originalText;
+	}
+
+	function changeCaption(e: CustomEvent) {
+		editingHistory.push(e.detail.newValue);
+		editingPointer = editingHistory.length - 1;
+	}
+
+	let originalText = editor.captions[idx].text;
+	console.log('original text: ', originalText);
 </script>
 
 <button class="caption" on:click={() => setIdxEditing(idx)}>
@@ -29,7 +47,11 @@
 			nextCaption={idx == editor.captions.length - 1 ? undefined : editor.captions[idx + 1]}
 		/>
 	{/if}
-	<InPlaceEdit bind:value={editor.captions[idx].text} />
+	<span class="toolbar">
+		<button on:click={() => undo()}>Undo</button> <button on:click={() => redo()}>Redo</button>
+		<button on:click={() => reset()}> Reset </button>
+	</span>
+	<InPlaceEdit bind:value={editor.captions[idx].text} on:submit={changeCaption} />
 </button>
 
 <style>
