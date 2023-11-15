@@ -7,16 +7,36 @@
 	export let idx: number;
 	export let idxEditing: number | undefined;
 
+	let editingHistory: string[] = [vid.captions[idx].text];
+	let editingPointer: number = 0;
+
 	const setIdxEditing = (idx: number) => {
 		idxEditing = idx;
 	};
 
+	function undo() {
+		editingPointer = Math.max(editingPointer - 1, 0);
+		vid.captions[idx].text = editingHistory[editingPointer];
+	}
+
+	function redo() {
+		editingPointer = Math.min(editingPointer + 1, editingHistory.length - 1);
+		vid.captions[idx].text = editingHistory[editingPointer];
+	}
+
+	function reset() {
+		vid.captions[idx].text = originalText;
+	}
+
 	function changeCaption(field) {
 		return ({ detail: newValue }) => {
-			// IRL: POST value to server here
-			console.log(`updated ${field}, new value is: "${newValue}"`);
+			editingHistory.push(newValue);
+			editingPointer = editingHistory.length - 1;
 		};
 	}
+
+	let originalText = vid.captions[idx].text;
+	console.log('original text: ', originalText);
 </script>
 
 <button class="caption" on:click={() => setIdxEditing(idx)}>
@@ -28,6 +48,10 @@
 			nextCaption={idx == vid.captions.length - 1 ? undefined : vid.captions[idx + 1]}
 		/>
 	{/if}
+	<span class="toolbar">
+		<button on:click={() => undo()}>Undo</button> <button on:click={() => redo()}>Redo</button>
+		<button on:click={() => reset()}> Reset </button>
+	</span>
 	<InPlaceEdit bind:value={vid.captions[idx].text} on:submit={changeCaption('title')} />
 </button>
 
