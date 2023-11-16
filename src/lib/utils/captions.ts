@@ -24,6 +24,7 @@ export class Caption {
 
     set startTime(value: number) {
         this._startTime = value;
+        this._vttCue.startTime = value;
     }
 
     get endTime(): number {
@@ -32,6 +33,7 @@ export class Caption {
 
     set endTime(value: number) {
         this._endTime = value;
+        this._vttCue.endTime = value;
     }
 
     get text(): string {
