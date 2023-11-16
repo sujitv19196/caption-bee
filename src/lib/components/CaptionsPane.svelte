@@ -47,7 +47,7 @@
 		margin-bottom: 10px;
 	}
 	.captions-container {
-		width: 30%;
+		width: fit;
 		margin: 10px;
 		padding: 10px;
 		border-radius: 10px;
