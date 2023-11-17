@@ -8,7 +8,7 @@
 	export let data: PageData;
 
 	const captions = Caption.deserializeCaptions(data.captions);
-	const editor = new Editor('', captions);
+	const editor = new Editor(captions);
 
 	let mouseSplitterDistance: number;
 	let mouseNearSplitter = false;
@@ -48,7 +48,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>Editor</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
@@ -84,7 +84,7 @@
 		background-color: var(--color-accent);
 	}
 	#rightPane {
-		flex-grow: 1;
+		flex: 1;
 		background: radial-gradient(ellipse at center, var(--color-bg-2) 60%, var(--color-bg-1) 120%);
 	}
 </style>

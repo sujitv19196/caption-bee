@@ -1,40 +1,60 @@
 import type { Caption } from "./captions";
 
 export class Editor {
-  private _src: string;
-  private _duration: number | undefined;
-  private _captions: Caption[];
+    private _captions: Caption[];
+    private _currentIdx: number;
+    private _duration: number | undefined;
+    private _navigationListeners: ((currentIdx: number) => void)[];
 
-  public constructor(src: string, captions: Caption[]) {
-    this._src = src;
-    this._captions = captions;
-  }
+    public constructor(captions: Caption[]) {
+        this._captions = captions;
+        this._currentIdx = 0;
+        this._navigationListeners = [];
+    }
 
-  get src(): string {
-    return this._src;
-  }
+    get duration(): number | undefined {
+        return this._duration;
+    }
 
-  set src(value: string) {
-    this._src = value;
-  }
+    set duration(value: number) {
+        this._duration = value;
+    }
 
-  get duration(): number | undefined {
-    return this._duration;
-  }
+    get captions(): Caption[] {
+        return this._captions;
+    }
 
-  set duration(value: number) {
-    this._duration = value;
-  }
+    get currentIdx(): number {
+        return this._currentIdx;
+    }
 
-  get captions(): Caption[] {
-    return this._captions;
-  }
+    get currentCaption(): Caption {
+        return this._captions[this._currentIdx];
+    }
 
-  set captions(value: Caption[]) {
-    this._captions = value;
-  }
+    next() {
+        if (this._currentIdx < this._captions.length - 1) {
+            this._currentIdx += 1;
+        }
+        for (const fn of this._navigationListeners) {
+            fn(this._currentIdx);
+        }
+    }
 
-  public setCaption(caption: Caption, idx: number): void {
-    this._captions[idx] = caption;
-  }
+    previous() {
+        if (this._currentIdx > 0) {
+            this._currentIdx -= 1;
+        }
+        for (const fn of this._navigationListeners) {
+            fn(this._currentIdx);
+        }
+    }
+
+    addNavigationListener(fn: (currentIdx: number) => void) {
+        this._navigationListeners.push(fn);
+    }
+
+    setCaption(caption: Caption, idx: number): void {
+        this._captions[idx] = caption;
+    }
 }

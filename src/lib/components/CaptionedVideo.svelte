@@ -12,6 +12,10 @@
 	let ended: boolean;
 	let volume: number;
 
+	editor.addNavigationListener(() => {
+		currentTime = editor.currentCaption.startTime;
+	});
+
 	onMount(() => {
 		const track = video.addTextTrack('captions', 'Captions', 'en');
 		track.mode = 'showing';

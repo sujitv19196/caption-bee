@@ -1,26 +1,22 @@
 <script lang="ts">
-	import type { Editor } from '$lib/utils/editor';
+	import type { Caption } from '$lib/utils/captions';
 	import CaptionTimestamp from './CaptionTimestamp.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
 
-	export let editor: Editor;
-	export let idx: number;
-	export let idxEditing: number | undefined;
-	console.log(idx);
+	// export let editor: Editor;
+	export let caption: Caption;
+	export let isCurrent: boolean;
+	export let positionY: number;
 
-	let editingHistory: string[] = [editor.captions[idx].text];
+	let editingHistory: string[] = [caption.text];
 	let editingPointer: number = 0;
-
-	const setIdxEditing = (idx: number) => {
-		idxEditing = idx;
-	};
 
 	function undo() {
 		console.log('undo function');
 		console.log(editingPointer, editingHistory);
 
 		editingPointer = Math.max(editingPointer - 1, 0);
-		editor.captions[idx].text = editingHistory[editingPointer];
+		caption.text = editingHistory[editingPointer];
 	}
 
 	function redo() {
@@ -28,26 +24,23 @@
 		console.log(editingPointer, editingHistory);
 
 		editingPointer = Math.min(editingPointer + 1, editingHistory.length - 1);
-		editor.captions[idx].text = editingHistory[editingPointer];
+		caption.text = editingHistory[editingPointer];
 	}
 
 	function reset() {
-		editor.captions[idx].text = originalText;
+		caption.text = originalText;
 	}
 
 	function changeCaption(e: CustomEvent) {
-		console.log('New value: ', editor.captions[idx].text);
-		console.log('Old value: ', editingHistory.at(-1));
-
-		if (editor.captions[idx].text == editingHistory.at(-1)) {
+		if (caption.text == editingHistory.at(-1)) {
 			return;
 		}
 
-		editingHistory.push(editor.captions[idx].text);
+		editingHistory.push(caption.text);
 		editingPointer = editingHistory.length - 1;
 	}
 
-	let originalText = editor.captions[idx].text;
+	let originalText = caption.text;
 	// console.log('original text: ', originalText);
 </script>
 
@@ -58,28 +51,28 @@
 	/>
 </head>
 
-<button class="caption" on:click={() => setIdxEditing(idx)}>
-	{#if idxEditing == idx}
-		<CaptionTimestamp
-			bind:editor
-			{idx}
-			prevCaption={idx == 0 ? undefined : editor.captions[idx - 1]}
-			nextCaption={idx == editor.captions.length - 1 ? undefined : editor.captions[idx + 1]}
-		/>
+<div class="caption-container" style="position: absolute; top: {positionY}px; left: 200px;">
+	<!-- {#if idxEditing == idx}
+        <CaptionTimestamp
+            bind:editor
+            {idx}
+            prevCaption={idx == 0 ? undefined : editor.captions[idx - 1]}
+            nextCaption={idx == editor.captions.length - 1 ? undefined : editor.captions[idx + 1]}
+        />
 
-		<span class="toolbar">
-			<button on:click={() => undo()}>
-				<i class="fa fa-undo" aria-hidden="true" />
-			</button>
-			<button on:click={() => redo()}>
-				<i class="fa fa-redo" aria-hidden="true" />
-			</button>
-			<button on:click={() => reset()}> Reset </button>
-		</span>
-	{/if}
+        <span class="toolbar">
+            <button on:click={() => undo()}>
+                <i class="fa fa-undo" aria-hidden="true" />
+            </button>
+            <button on:click={() => redo()}>
+                <i class="fa fa-redo" aria-hidden="true" />
+            </button>
+            <button on:click={() => reset()}> Reset </button>
+        </span>
+    {/if} -->
 
-	<InPlaceEdit bind:value={editor.captions[idx].text} on:submit={changeCaption} />
-</button>
+	<InPlaceEdit bind:value={caption.text} editing={isCurrent} on:submit={changeCaption} />
+</div>
 
 <style>
 	.caption {

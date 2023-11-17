@@ -5,13 +5,8 @@
 	export let required = true;
 
 	const dispatch = createEventDispatcher();
-	let editing = false;
+	export let editing = false;
 	const original = value;
-	console.log(value);
-
-	function edit() {
-		editing = true;
-	}
 
 	function submit() {
 		if (value != original) {
@@ -39,9 +34,7 @@
 		<input bind:value on:blur={submit} {required} use:focus />
 	</form>
 {:else}
-	<div on:click={edit}>
-		{value}
-	</div>
+	<div>{value}</div>
 {/if}
 
 <style>
