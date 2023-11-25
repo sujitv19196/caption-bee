@@ -6,6 +6,7 @@ export interface SerializedCaption {
     endTime: number;
     text: string;
     originalText?: string;
+    score: number;
 }
 
 
@@ -14,6 +15,7 @@ export class Caption {
     private _endTime: number;
     private _text: string;
     private _originalText: string;
+    private _score: number;
     private _next: Caption | null = null;
     private _previous: Caption | null = null;
     private _vttCue: VTTCue;
@@ -49,6 +51,14 @@ export class Caption {
         return this._originalText;
     }
 
+    get score(): number {
+        return this._score
+    }
+
+    set score(value: number) {
+        this._score = value;
+    }
+
     get next(): Caption | null {
         return this._next;
     }
@@ -66,6 +76,7 @@ export class Caption {
         this._endTime = serialized.endTime;
         this._text = serialized.text;
         this._originalText = serialized.originalText ?? serialized.text;
+        this._score = serialized.score;
         this._vttCue = new VTTCue(this._startTime, this._endTime, this._text);
     }
 
@@ -75,6 +86,7 @@ export class Caption {
             endTime: this._endTime,
             text: this._text,
             originalText: this._originalText,
+            score: this._score,
         };
     }
 

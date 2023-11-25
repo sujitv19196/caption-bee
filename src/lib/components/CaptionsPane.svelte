@@ -19,6 +19,7 @@
 
 	let firstVisibleIdx = 0;
 	let captionOffsets: number[] = [];
+
 	function updateVisibleCaptions() {
 		firstVisibleIdx = Math.max(0, editor.currentIdx - numVisibleCaptions);
 		const lastIdx = Math.min(editor.captions.length, editor.currentIdx + numVisibleCaptions);
@@ -32,6 +33,18 @@
 			} else {
 				captionOffsets.push(middleZoneY + middleZoneHeight + (relativeIdx - 1) * captionHeight);
 			}
+		}
+	}
+
+	// Change text color based on caption accuracy
+	// TODO make tresholds user adjustable
+	function getCaptionColor(score: number) {
+		if (score > 0.8) {
+			return '#00ff00'; // High accuracy, green color
+		} else if (score > 0.5) {
+			return '#ffff00'; // Medium accuracy, yellow color
+		} else {
+			return '#ff0000'; // Low accuracy, red color
 		}
 	}
 
@@ -68,6 +81,7 @@
 			{#each captionOffsets as offset, i (firstVisibleIdx + i)}
 				{@const idx = firstVisibleIdx + i}
 				{@const caption = editor.captions[idx]}
+				{@const score = caption.score}
 
 				<div
 					class="caption-container"
@@ -82,9 +96,14 @@
 						{/key}
 
 						{#if idx === editor.currentIdx}
-							<input class="current-caption" bind:value={editor.currentCaption.text} use:focus />
+							<input
+								class="current-caption"
+								style="color: {getCaptionColor(score)}"
+								bind:value={editor.currentCaption.text}
+								use:focus
+							/>
 						{:else}
-							<div class="caption-text">{caption.text}</div>
+							<div class="caption-text" style="color: {getCaptionColor(score)}">{caption.text}</div>
 						{/if}
 					</div>
 				</div>
@@ -127,7 +146,6 @@
 	.caption-text {
 		width: calc(100% - 250px);
 		font-size: 18px;
-		color: #c3c3c3;
 	}
 	.current-caption {
 		width: calc(100% - 250px);
@@ -135,7 +153,6 @@
 		border: none;
 		font-family: Arial;
 		font-size: 18px;
-		color: white;
 	}
 	.toolbar-container {
 		left: 150px;
