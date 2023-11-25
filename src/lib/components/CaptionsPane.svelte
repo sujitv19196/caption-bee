@@ -63,6 +63,11 @@
 		el.focus();
 	}
 
+	function updateEditedCaptionScore(idx: number) {
+		editor.currentCaption.score = 1; // Set score to 1 once user edits it
+		return null;
+	}
+
 	onMount(() => {
 		updateVisibleCaptions();
 	});
@@ -100,6 +105,7 @@
 								class="current-caption"
 								style="color: {getCaptionColor(score)}"
 								bind:value={editor.currentCaption.text}
+								on:blur={updateEditedCaptionScore(idx)}
 								use:focus
 							/>
 						{:else}
