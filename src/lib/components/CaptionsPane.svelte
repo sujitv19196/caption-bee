@@ -40,12 +40,20 @@
 	// TODO make tresholds user adjustable
 	function getCaptionColor(score: number) {
 		if (score > 0.8) {
-			return '#00ff00'; // High accuracy, green color
+			return '#4CAF50'; // High accuracy, dark green color
 		} else if (score > 0.5) {
-			return '#ffff00'; // Medium accuracy, yellow color
+			return '#FFC107'; // Medium accuracy, amber color
 		} else {
-			return '#ff0000'; // Low accuracy, red color
+			return '#F44336'; // Low accuracy, dark red color
 		}
+	}
+
+	function onFinishCaptionEditing() {
+		// Update score
+		if (editor.currentCaption.text !== editor.currentCaption.originalText) {
+			editor.currentCaption.score = 1; // Set score to 1 if user edits it
+		}
+		return null;
 	}
 
 	$: {
@@ -61,11 +69,6 @@
 
 	function focus(el: HTMLInputElement) {
 		el.focus();
-	}
-
-	function updateEditedCaptionScore(idx: number) {
-		editor.currentCaption.score = 1; // Set score to 1 once user edits it
-		return null;
 	}
 
 	onMount(() => {
@@ -105,7 +108,7 @@
 								class="current-caption"
 								style="color: {getCaptionColor(score)}"
 								bind:value={editor.currentCaption.text}
-								on:blur={updateEditedCaptionScore(idx)}
+								on:blur={onFinishCaptionEditing}
 								use:focus
 							/>
 						{:else}
