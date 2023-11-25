@@ -30,6 +30,14 @@
 	}
 	update();
 
+	function updateCaptionSocre() {
+		prevCaption = currentCaption.previous;
+		// Update score only when user edits text and clicks next
+		if (prevCaption?.text !== prevCaption?.originalText) {
+			prevCaption ? (prevCaption.score = 1) : null; // Set score to 1 if user edits text
+		}
+	}
+
 	function undo() {
 		if (currentCaption.text !== currentCaption.originalText) {
 			document.execCommand('undo');
@@ -43,6 +51,7 @@
 	function onNext() {
 		editor.next();
 		update();
+		updateCaptionSocre();
 	}
 
 	function onPrevious() {

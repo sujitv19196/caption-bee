@@ -48,14 +48,6 @@
 		}
 	}
 
-	function onFinishCaptionEditing() {
-		// Update score
-		if (editor.currentCaption.text !== editor.currentCaption.originalText) {
-			editor.currentCaption.score = 1; // Set score to 1 if user edits it
-		}
-		return null;
-	}
-
 	$: {
 		numVisibleCaptions = Math.floor((height - minMiddleZoneHeight) / captionHeight);
 		middleZoneHeight = height - numVisibleCaptions * captionHeight;
@@ -108,7 +100,6 @@
 								class="current-caption"
 								style="color: {getCaptionColor(score)}"
 								bind:value={editor.currentCaption.text}
-								on:blur={onFinishCaptionEditing}
 								use:focus
 							/>
 						{:else}
