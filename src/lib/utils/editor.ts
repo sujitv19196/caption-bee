@@ -1,23 +1,21 @@
 import type { Caption } from "./captions";
+import { VideoController } from "./video";
 
 export class Editor {
+    private _video: VideoController;
     private _captions: Caption[];
     private _currentIdx: number;
-    private _duration: number | undefined;
     private _navigationListeners: ((currentIdx: number) => void)[];
 
     public constructor(captions: Caption[]) {
+        this._video = new VideoController();
         this._captions = captions;
         this._currentIdx = 0;
         this._navigationListeners = [];
     }
 
-    get duration(): number | undefined {
-        return this._duration;
-    }
-
-    set duration(value: number) {
-        this._duration = value;
+    get video(): VideoController {
+        return this._video;
     }
 
     get captions(): Caption[] {

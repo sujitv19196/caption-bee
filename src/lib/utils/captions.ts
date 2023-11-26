@@ -1,5 +1,4 @@
-
-
+import { get, writable, type Writable } from 'svelte/store';
 
 export interface SerializedCaption {
     startTime: number;
@@ -9,11 +8,10 @@ export interface SerializedCaption {
     score: number;
 }
 
-
 export class Caption {
-    private _startTime: number;
-    private _endTime: number;
-    private _text: string;
+    private _startTimeStore: Writable<number>;
+    private _endTimeStore: Writable<number>;
+    private _textStore: Writable<string>;
     private _originalText: string;
     private _score: number;
     private _next: Caption | null = null;
@@ -21,30 +19,39 @@ export class Caption {
     private _vttCue: VTTCue;
 
     get startTime(): number {
-        return this._startTime;
+        return get(this._startTimeStore);
     }
 
     set startTime(value: number) {
-        this._startTime = value;
-        this._vttCue.startTime = value;
+        this._startTimeStore.set(value);
+    }
+
+    get startTimeStore(): Writable<number> {
+        return this._startTimeStore;
     }
 
     get endTime(): number {
-        return this._endTime;
+        return get(this._endTimeStore);
     }
 
     set endTime(value: number) {
-        this._endTime = value;
-        this._vttCue.endTime = value;
+        this._endTimeStore.set(value);
+    }
+
+    get endTimeStore(): Writable<number> {
+        return this._endTimeStore;
     }
 
     get text(): string {
-        return this._text;
+        return get(this._textStore);
     }
 
     set text(value: string) {
-        this._text = value;
-        this._vttCue.text = value;
+        this._textStore.set(value);
+    }
+
+    get textStore(): Writable<string> {
+        return this._textStore;
     }
 
     get originalText(): string {
@@ -72,19 +79,29 @@ export class Caption {
     }
 
     private constructor(serialized: SerializedCaption) {
-        this._startTime = serialized.startTime;
-        this._endTime = serialized.endTime;
-        this._text = serialized.text;
+        this._startTimeStore = writable(serialized.startTime);
+        this._endTimeStore = writable(serialized.endTime);
+        this._textStore = writable(serialized.text);
         this._originalText = serialized.originalText ?? serialized.text;
         this._score = serialized.score;
-        this._vttCue = new VTTCue(this._startTime, this._endTime, this._text);
+        this._vttCue = new VTTCue(this.startTime, this.endTime, this.text);
+
+        this._startTimeStore.subscribe((value: number) => {
+            this._vttCue.startTime = value;
+        })
+        this._endTimeStore.subscribe((value: number) => {
+            this._vttCue.endTime = value;
+        })
+        this._textStore.subscribe((value: string) => {
+            this._vttCue.text = value;
+        })
     }
 
     serialize(): SerializedCaption {
         return {
-            startTime: this._startTime,
-            endTime: this._endTime,
-            text: this._text,
+            startTime: this.startTime,
+            endTime: this.endTime,
+            text: this.text,
             originalText: this._originalText,
             score: this._score,
         };
