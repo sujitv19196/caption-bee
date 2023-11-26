@@ -6,15 +6,11 @@
 	export let videoSrc: string;
 	export let hidden: boolean;
 
-	let video: HTMLVideoElement;
-	let currentTime: number;
-	let paused: boolean;
-	let ended: boolean;
-	let volume: number;
+	const currentTimeStore = editor.video.currentTimeStore;
+	const pausedStore = editor.video.pausedStore;
+	const playbackRateStore = editor.video.playbackRateStore;
 
-	editor.addNavigationListener(() => {
-		currentTime = editor.currentCaption.startTime;
-	});
+	let video: HTMLVideoElement;
 
 	onMount(() => {
 		const track = video.addTextTrack('captions', 'Captions', 'en');
@@ -31,11 +27,10 @@
 	controls
 	src={videoSrc}
 	bind:this={video}
-	bind:currentTime
-	bind:paused
-	bind:ended
-	bind:volume
-	bind:duration={editor.duration}
+	bind:currentTime={$currentTimeStore}
+	bind:paused={$pausedStore}
+	bind:playbackRate={$playbackRateStore}
+	bind:duration={editor.video.duration}
 >
 	<track kind="captions" />
 </video>

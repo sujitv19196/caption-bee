@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import type { Writable } from 'svelte/store';
 	import { flip } from 'svelte/animate';
-	import CaptionBox from './CaptionBox.svelte';
 	import Toolbar from './Toolbar.svelte';
-	import type { Caption } from '$lib/utils/captions';
 	import type { Editor } from '$lib/utils/editor';
 
 	export let editor: Editor;
@@ -42,8 +41,20 @@
 		updateVisibleCaptions();
 	}
 
+	let currentCaptionStart: Writable<number>;
+	let currentCaptionEnd: Writable<number>;
+	let currentCaptionText: Writable<string>;
+
+	function updateStores() {
+		currentCaptionStart = editor.currentCaption.startTimeStore;
+		currentCaptionEnd = editor.currentCaption.endTimeStore;
+		currentCaptionText = editor.currentCaption.textStore;
+	}
+	updateStores();
+
 	editor.addNavigationListener(() => {
 		updateVisibleCaptions();
+		updateStores();
 	});
 
 	function focus(el: HTMLInputElement) {
@@ -75,15 +86,17 @@
 					animate:flip={{ duration: 250 }}
 				>
 					<div class="caption">
-						{#key caption.startTime}
+						{#if idx === editor.currentIdx}
+							<span class="caption-timestamp">
+								{new Date($currentCaptionStart * 1000).toISOString().slice(11, 19)}
+							</span>
+
+							<input class="current-caption" bind:value={$currentCaptionText} use:focus />
+						{:else}
 							<span class="caption-timestamp">
 								{new Date(caption.startTime * 1000).toISOString().slice(11, 19)}
 							</span>
-						{/key}
 
-						{#if idx === editor.currentIdx}
-							<input class="current-caption" bind:value={editor.currentCaption.text} use:focus />
-						{:else}
 							<div class="caption-text">{caption.text}</div>
 						{/if}
 					</div>
@@ -91,10 +104,7 @@
 			{/each}
 		{/if}
 	</div>
-	<div
-		class="toolbar-container"
-		style="position: absolute; top: {middleZoneY + 25}px; height: {middleZoneHeight}px;"
-	>
+	<div class="toolbar-container" style="position: absolute; top: {middleZoneY + 25}px;">
 		<Toolbar {editor} />
 	</div>
 </div>
@@ -122,12 +132,12 @@
 		padding-left: 50px;
 		width: 100px;
 		font-size: 12px;
-		color: #8c8c8c;
+		color: var(--color-fg-3);
 	}
 	.caption-text {
 		width: calc(100% - 250px);
 		font-size: 18px;
-		color: #c3c3c3;
+		color: var(--color-fg-2);
 	}
 	.current-caption {
 		width: calc(100% - 250px);
@@ -135,7 +145,7 @@
 		border: none;
 		font-family: Arial;
 		font-size: 18px;
-		color: white;
+		color: var(--color-fg-1);
 	}
 	.toolbar-container {
 		left: 150px;
