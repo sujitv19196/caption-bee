@@ -18,6 +18,7 @@
 
 	let firstVisibleIdx = 0;
 	let captionOffsets: number[] = [];
+
 	function updateVisibleCaptions() {
 		firstVisibleIdx = Math.max(0, editor.currentIdx - numVisibleCaptions);
 		const lastIdx = Math.min(editor.captions.length, editor.currentIdx + numVisibleCaptions);
@@ -31,6 +32,18 @@
 			} else {
 				captionOffsets.push(middleZoneY + middleZoneHeight + (relativeIdx - 1) * captionHeight);
 			}
+		}
+	}
+
+	// Change text color based on caption accuracy
+	// TODO make tresholds user adjustable
+	function getCaptionColor(score: number) {
+		if (score > 0.8) {
+			return '#4CAF50'; // High accuracy, dark green color
+		} else if (score > 0.5) {
+			return '#FFC107'; // Medium accuracy, amber color
+		} else {
+			return '#F44336'; // Low accuracy, dark red color
 		}
 	}
 
@@ -79,6 +92,7 @@
 			{#each captionOffsets as offset, i (firstVisibleIdx + i)}
 				{@const idx = firstVisibleIdx + i}
 				{@const caption = editor.captions[idx]}
+				{@const score = caption.score}
 
 				<div
 					class="caption-container"
@@ -91,13 +105,18 @@
 								{new Date($currentCaptionStart * 1000).toISOString().slice(11, 19)}
 							</span>
 
-							<input class="current-caption" bind:value={$currentCaptionText} use:focus />
+							<input
+								class="current-caption"
+								style="color: {getCaptionColor(score)}"
+								bind:value={$currentCaptionText}
+								use:focus
+							/>
 						{:else}
 							<span class="caption-timestamp">
 								{new Date(caption.startTime * 1000).toISOString().slice(11, 19)}
 							</span>
 
-							<div class="caption-text">{caption.text}</div>
+							<div class="caption-text" style="color: {getCaptionColor(score)}">{caption.text}</div>
 						{/if}
 					</div>
 				</div>
@@ -137,7 +156,6 @@
 	.caption-text {
 		width: calc(100% - 250px);
 		font-size: 18px;
-		color: var(--color-fg-2);
 	}
 	.current-caption {
 		width: calc(100% - 250px);
@@ -145,7 +163,6 @@
 		border: none;
 		font-family: Arial;
 		font-size: 18px;
-		color: var(--color-fg-1);
 	}
 	.toolbar-container {
 		left: 150px;
