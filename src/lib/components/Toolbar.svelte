@@ -129,7 +129,7 @@
 		editor.video.paused = !editor.video.paused;
 	}
 
-	function updateCaptionSocre() {
+	function updateCaptionScore() {
 		prevCaption = currentCaption.previous;
 		// Update score only when user edits text and clicks next
 		if (prevCaption?.text !== prevCaption?.originalText) {
@@ -144,7 +144,7 @@
 	function onNext() {
 		editor.next();
 		onNavigation();
-		updateCaptionSocre();
+		updateCaptionScore();
 	}
 
 	function onPrevious() {
