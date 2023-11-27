@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CaptionedVideo from '$lib/components/CaptionedVideo.svelte';
 	import CaptionsPane from '$lib/components/CaptionsPane.svelte';
+	import SettingsMenu from '$lib/components/SettingsMenu.svelte';
 	import { Caption, type SerializedCaption } from '$lib/utils/captions';
 	import { Editor } from '$lib/utils/editor';
 	import type { PageData } from './$types';
@@ -9,6 +10,12 @@
 
 	const captions = Caption.deserializeCaptions(data.captions);
 	const editor = new Editor(captions);
+
+	let settings: { [key: string]: any } = {};
+
+	function handleSettingsChange(updatedSettings: { [key: string]: any }) {
+		settings = updatedSettings.detail;
+	}
 
 	let mouseSplitterDistance: number;
 	let mouseNearSplitter = false;
@@ -55,6 +62,9 @@
 <svelte:window on:mousedown={onMouseDown} on:mouseup={onMouseUp} on:mousemove={onMouseMove} />
 
 <div id="content">
+	<div id="settingsMenu">
+		<SettingsMenu on:settingsChange={handleSettingsChange} />
+	</div>
 	<div id="leftPane" style="width: {leftPaneWidth}px;">
 		<CaptionedVideo videoSrc="/movie.mp4" {editor} hidden={leftPaneHidden} />
 	</div>
@@ -62,7 +72,7 @@
 	<div id={mouseNearSplitter ? 'splitterHover' : 'splitter'} />
 
 	<div id="rightPane">
-		<CaptionsPane {editor} />
+		<CaptionsPane {editor} {settings} />
 	</div>
 </div>
 
@@ -86,5 +96,14 @@
 	#rightPane {
 		flex: 1;
 		background: radial-gradient(ellipse at center, var(--color-bg-2) 60%, var(--color-bg-1) 120%);
+	}
+	#settingsMenu {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		z-index: 1;
+		background: radial-gradient(ellipse at center, var(--color-bg-2) 60%, var(--color-bg-1) 120%);
+		padding: 10px;
+		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 	}
 </style>

@@ -6,6 +6,7 @@
 	import type { Editor } from '$lib/utils/editor';
 
 	export let editor: Editor;
+	export let settings: { [key: string]: any };
 
 	const captionHeight = 60;
 	const currentCaptionBottomMargin = 25;
@@ -36,11 +37,10 @@
 	}
 
 	// Change text color based on caption accuracy
-	// TODO make tresholds user adjustable
 	function getCaptionColor(score: number) {
-		if (score > 0.8) {
+		if (score >= settings['highAccuracyThreshold']) {
 			return '#4CAF50'; // High accuracy, dark green color
-		} else if (score > 0.5) {
+		} else if (score >= settings['mediumAccuracyThreshold']) {
 			return '#FFC107'; // Medium accuracy, amber color
 		} else {
 			return '#F44336'; // Low accuracy, dark red color
@@ -52,6 +52,8 @@
 		middleZoneHeight = height - numVisibleCaptions * captionHeight;
 		middleZoneY = captionHeight * Math.floor(numVisibleCaptions / 2);
 		updateVisibleCaptions();
+		// update settings on change
+		settings;
 	}
 
 	let currentCaptionStart: Writable<number>;
@@ -84,11 +86,6 @@
 		{#if !editor.captions.length}
 			<p>No captions available</p>
 		{:else}
-			<!-- Display only captionsPerPage number of captions -->
-			<!-- {#each Array.from({ length: Math.min(captionsPerPage, editor.captions.length - currentCaption) }, (_, i) => currentCaption + i) as idx}
-				<CaptionBox bind:editor {idx} bind:idxEditing />
-			{/each} -->
-
 			{#each captionOffsets as offset, i (firstVisibleIdx + i)}
 				{@const idx = firstVisibleIdx + i}
 				{@const caption = editor.captions[idx]}
