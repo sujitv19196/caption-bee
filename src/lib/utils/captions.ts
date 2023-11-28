@@ -103,17 +103,17 @@ export class Caption {
             this._vttCue.endTime = value;
         })
         this._textStore.subscribe((value: string) => {
-            if (value != "") {
-                this._vttCue.text = `[${get(this._speakerName)}] ${value}`
+            if (this.speaker != "") {
+                this._vttCue.text = `[${this.speaker}] ${value}`
             } else {
                 this._vttCue.text = value
             }
         })
         this._speakerName.subscribe((value: string) => {
             if (value != "") {
-                this._vttCue.text = `[${value}] ${get(this._textStore)}`
+                this._vttCue.text = `[${value}] ${this.text}`
             } else {
-                this._vttCue.text = get(this._textStore)
+                this._vttCue.text = this.text
             }
         })
     }
