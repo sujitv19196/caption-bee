@@ -12,6 +12,7 @@ export class Caption {
     private _startTimeStore: Writable<number>;
     private _endTimeStore: Writable<number>;
     private _textStore: Writable<string>;
+    private _speakerName: Writable<string>;
     private _originalText: string;
     private _score: number;
     private _next: Caption | null = null;
@@ -54,6 +55,14 @@ export class Caption {
         return this._textStore;
     }
 
+    get speakerName(): Writable<string> {
+        return this._speakerName;
+    }
+
+    get speaker(): string {
+        return get(this._speakerName)
+    }
+
     get originalText(): string {
         return this._originalText;
     }
@@ -82,6 +91,7 @@ export class Caption {
         this._startTimeStore = writable(serialized.startTime);
         this._endTimeStore = writable(serialized.endTime);
         this._textStore = writable(serialized.text);
+        this._speakerName = writable("")
         this._originalText = serialized.originalText ?? serialized.text;
         this._score = serialized.score;
         this._vttCue = new VTTCue(this.startTime, this.endTime, this.text);
@@ -93,7 +103,18 @@ export class Caption {
             this._vttCue.endTime = value;
         })
         this._textStore.subscribe((value: string) => {
-            this._vttCue.text = value;
+            if (this.speaker != "") {
+                this._vttCue.text = `[${this.speaker}] ${value}`
+            } else {
+                this._vttCue.text = value
+            }
+        })
+        this._speakerName.subscribe((value: string) => {
+            if (value != "") {
+                this._vttCue.text = `[${value}] ${this.text}`
+            } else {
+                this._vttCue.text = this.text
+            }
         })
     }
 
