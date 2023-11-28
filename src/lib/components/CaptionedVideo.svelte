@@ -1,3 +1,5 @@
+<!-- CaptionedVideo.svelte -->
+
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Editor } from '$lib/utils/editor';
@@ -21,24 +23,58 @@
 	});
 </script>
 
-<video
-	id="video-player"
-	{hidden}
-	controls
-	src={videoSrc}
-	bind:this={video}
-	bind:currentTime={$currentTimeStore}
-	bind:paused={$pausedStore}
-	bind:playbackRate={$playbackRateStore}
-	bind:duration={editor.video.duration}
->
-	<track kind="captions" />
-</video>
+<div class="video-container">
+	<video
+		id="video-player"
+		{hidden}
+		controls
+		src={videoSrc}
+		bind:this={video}
+		bind:currentTime={$currentTimeStore}
+		bind:paused={$pausedStore}
+		bind:playbackRate={$playbackRateStore}
+		bind:duration={editor.video.duration}
+	>
+		<track kind="captions" />
+	</video>
+	<div class="statistics-container">
+		<div class="statistics-box">
+			<p class="statistics-label">Remaining Captions:</p>
+			<p class="statistics-count">70</p>
+		</div>
+		<div class="statistics-box">
+			<p class="statistics-label">Edited Captions:</p>
+			<p class="statistics-count">0</p>
+		</div>
+	</div>
+</div>
 
 <style>
-	#video-player {
-		width: calc(100% - 20px);
-		margin: 10px;
-		border-radius: 10px;
+	.video-container {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.statistics-container {
+		display: flex;
+		justify-content: space-around;
+		margin-top: 20px;
+	}
+
+	.statistics-box {
+		padding: 10px;
+		border: 2px solid #3498db; /* Border color */
+		border-radius: 8px;
+		text-align: center;
+		background-color: white; /* Set background color */
+	}
+
+	.statistics-label {
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+
+	.statistics-count {
+		font-size: 18px;
 	}
 </style>
