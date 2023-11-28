@@ -264,7 +264,7 @@
 	.toolbar-button {
 		background-color: var(--color-fg-4);
 	}
-	.next-button {
+	.accent-button {
 		background-color: var(--color-accent);
 	}
 </style>
