@@ -40,7 +40,7 @@
 	<div class="statistics-container">
 		<div class="statistics-box">
 			<p class="statistics-label">Remaining Captions:</p>
-			<p class="statistics-count">70</p>
+			<p class="statistics-count">75</p>
 		</div>
 		<div class="statistics-box">
 			<p class="statistics-label">Edited Captions:</p>
