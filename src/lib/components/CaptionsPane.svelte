@@ -59,11 +59,12 @@
 	let currentCaptionStart: Writable<number>;
 	let currentCaptionEnd: Writable<number>;
 	let currentCaptionText: Writable<string>;
-
+	let currentCaptionSpeaker: Writable<string>;
 	function updateStores() {
 		currentCaptionStart = editor.currentCaption.startTimeStore;
 		currentCaptionEnd = editor.currentCaption.endTimeStore;
 		currentCaptionText = editor.currentCaption.textStore;
+		currentCaptionSpeaker = editor.currentCaption.speakerName;
 	}
 	updateStores();
 
@@ -101,19 +102,35 @@
 							<span class="caption-timestamp">
 								{new Date($currentCaptionStart * 1000).toISOString().slice(11, 19)}
 							</span>
-
+							{#if settings['enableSpeakerNames']}
+								<input
+									class="current-caption-speaker"
+									bind:value={$currentCaptionSpeaker}
+									placeholder="Enter Speaker Name"
+									spellcheck="true"
+									use:focus
+								/>
+							{/if}
 							<input
 								class="current-caption"
 								style="color: {getCaptionColor(score)}"
 								bind:value={$currentCaptionText}
+								spellcheck="true"
 								use:focus
 							/>
 						{:else}
 							<span class="caption-timestamp">
 								{new Date(caption.startTime * 1000).toISOString().slice(11, 19)}
 							</span>
-
-							<div class="caption-text" style="color: {getCaptionColor(score)}">{caption.text}</div>
+							{#if settings['enableSpeakerNames'] && caption.speaker != ''}
+								<div class="caption-text" style="color: {getCaptionColor(score)}">
+									{`[${caption.speaker}] ${caption.text}`}
+								</div>
+							{:else}
+								<div class="caption-text" style="color: {getCaptionColor(score)}">
+									{caption.text}
+								</div>
+							{/if}
 						{/if}
 					</div>
 				</div>
@@ -155,11 +172,20 @@
 		font-size: 18px;
 	}
 	.current-caption {
-		width: calc(100% - 250px);
+		width: calc(90% - 250px);
 		background: none;
 		border: none;
 		font-family: Arial;
 		font-size: 18px;
+	}
+	.current-caption-speaker {
+		width: calc(32.5% - 250px);
+		background: none;
+		border: none;
+		font-family: Arial;
+		font-size: 18px;
+		color: white;
+		margin-right: 1%;
 	}
 	.toolbar-container {
 		left: 150px;

@@ -6,7 +6,8 @@
 		highAccuracyThreshold: 0.9,
 		mediumAccuracyThreshold: 0.7,
 		lowAccuracyThreshold: 0.5,
-		advacnedMode: false
+		advacnedMode: false,
+		enableSpeakerNames: false
 	};
 
 	const dispatch = createEventDispatcher();
