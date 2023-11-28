@@ -181,7 +181,7 @@
 			/>
 		</div>
 
-		<button class="slider-button hoverable" on:click={togglePlay}>
+		<button class="slider-button clickable" on:click={togglePlay}>
 			{#if !paused}
 				<i class="fa fa-pause" aria-hidden="true" />
 			{:else if currentTime >= upperBound}
@@ -191,7 +191,7 @@
 			{/if}
 		</button>
 
-		<select class="slider-dropdown hoverable" bind:value={editor.video.playbackRate}>
+		<select class="slider-dropdown select-dark clickable" bind:value={editor.video.playbackRate}>
 			<option value={0.5}>0.5x</option>
 			<option value={0.75}>0.75x</option>
 			<option value={1}>1x</option>
@@ -203,12 +203,12 @@
 	<hr class="divider" />
 
 	<div class="toolbar-button-row">
-		<button class="toolbar-button hoverable" on:click={reset}>reset</button>
+		<button class="toolbar-button clickable" on:click={reset}>reset</button>
 
-		<button class="toolbar-button hoverable" style="margin-left: auto;" on:click={onPrevious}
+		<button class="toolbar-button clickable" style="margin-left: auto;" on:click={onPrevious}
 			>previous</button
 		>
-		<button class="next-button hoverable" on:click={onNext}>next</button>
+		<button class="accent-button clickable" on:click={onNext}>done</button>
 	</div>
 </div>
 
@@ -219,7 +219,6 @@
 		background-color: rgba(62, 62, 62, 0.7);
 		-webkit-backdrop-filter: blur(10px);
 		backdrop-filter: blur(10px);
-		border: 1px solid var(--color-border);
 		border-radius: 10px;
 	}
 	.divider {
@@ -233,6 +232,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		color: var(--color-fg-2);
 	}
 	.toolbar-button-row {
 		height: 48px;
@@ -252,7 +252,7 @@
 		background: none;
 	}
 	.toolbar-button,
-	.next-button {
+	.accent-button {
 		height: 25px;
 		margin-left: 5px;
 		margin-right: 5px;
@@ -260,9 +260,6 @@
 		border-radius: 5px;
 		font-size: 12px;
 		color: var(--color-fg-1);
-	}
-	.hoverable:hover {
-		filter: brightness(1.2);
 	}
 	.toolbar-button {
 		background-color: var(--color-fg-4);
