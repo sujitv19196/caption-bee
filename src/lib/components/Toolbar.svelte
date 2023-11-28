@@ -181,7 +181,7 @@
 			/>
 		</div>
 
-		<button class="slider-button" on:click={togglePlay}>
+		<button class="slider-button hoverable" on:click={togglePlay}>
 			{#if !paused}
 				<i class="fa fa-pause" aria-hidden="true" />
 			{:else if currentTime >= upperBound}
@@ -191,7 +191,7 @@
 			{/if}
 		</button>
 
-		<select class="slider-button" bind:value={editor.video.playbackRate}>
+		<select class="slider-dropdown hoverable" bind:value={editor.video.playbackRate}>
 			<option value={0.5}>0.5x</option>
 			<option value={0.75}>0.75x</option>
 			<option value={1}>1x</option>
@@ -203,11 +203,12 @@
 	<hr class="divider" />
 
 	<div class="toolbar-button-row">
-		<button class="toolbar-button" on:click={reset}>reset</button>
+		<button class="toolbar-button hoverable" on:click={reset}>reset</button>
 
-		<button class="toolbar-button" style="margin-left: auto;" on:click={onPrevious}>previous</button
+		<button class="toolbar-button hoverable" style="margin-left: auto;" on:click={onPrevious}
+			>previous</button
 		>
-		<button class="next-button" on:click={onNext}>next</button>
+		<button class="next-button hoverable" on:click={onNext}>next</button>
 	</div>
 </div>
 
@@ -215,7 +216,7 @@
 	.toolbar {
 		width: 100%;
 		height: 100px;
-		background-color: #414141bb;
+		background-color: rgba(62, 62, 62, 0.7);
 		-webkit-backdrop-filter: blur(10px);
 		backdrop-filter: blur(10px);
 		border: 1px solid var(--color-border);
@@ -224,7 +225,7 @@
 	.divider {
 		height: 1px;
 		border: none;
-		background-color: #4d4d4d;
+		background-color: var(--color-fg-4);
 		margin: 0;
 	}
 	.toolbar-slider-row,
@@ -239,13 +240,16 @@
 		padding-left: 5px;
 		padding-right: 5px;
 	}
-	.slider-button {
+	.slider-button,
+	.slider-dropdown {
 		min-width: 30px;
 		margin-right: 10px;
-		background: none;
 		border: none;
 		font-size: 16px;
 		color: var(--color-fg-2);
+	}
+	.slider-button {
+		background: none;
 	}
 	.toolbar-button,
 	.next-button {
@@ -257,13 +261,11 @@
 		font-size: 12px;
 		color: var(--color-fg-1);
 	}
-	.slider-button:hover,
-	.toolbar-button:hover,
-	.next-button:hover {
+	.hoverable:hover {
 		filter: brightness(1.2);
 	}
 	.toolbar-button {
-		background-color: #555555;
+		background-color: var(--color-fg-4);
 	}
 	.next-button {
 		background-color: var(--color-accent);

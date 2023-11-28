@@ -87,7 +87,7 @@
 	}
 	#splitter {
 		width: 1px;
-		background-color: var(--color-border);
+		background-color: var(--color-bg-3);
 	}
 	#splitterHover {
 		width: 1px;

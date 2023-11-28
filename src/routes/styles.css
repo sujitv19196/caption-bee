@@ -4,9 +4,10 @@
 	--color-fg-1: rgb(255, 255, 255);
 	--color-fg-2: rgb(194, 194, 194);
 	--color-fg-3: rgb(140, 140, 140);
+	--color-fg-4: rgb(84, 84, 84);
 	--color-bg-1: rgb(30, 30, 30);
 	--color-bg-2: rgb(40, 40, 40);
-	--color-border: rgb(60, 60, 60);
+	--color-bg-3: rgb(62, 62, 62);
 	--color-accent: rgb(170, 2, 250);
 	--range-slider: var(--color-bg-2);
 	--range-handle-inactive: var(--color-fg-2);
@@ -21,4 +22,12 @@ body {
 	background-color: var(--color-bg-1);
 	background-size: 100vw 100vh;
 	font-family: Arial;
+}
+
+select {
+	appearance: none;
+	-webkit-appearance: none;
+	background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' height='0.8em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path fill='rgb(194, 194, 194)' d='M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'/></svg>") no-repeat;
+	background-position: right 3px center;
+	padding-right: 1.4em;
 }
