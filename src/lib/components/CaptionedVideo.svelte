@@ -14,6 +14,16 @@
 
 	let video: HTMLVideoElement;
 
+	function getRemainingCaptions(editor: Editor) {
+		const totalCaptions = editor.captions.length;
+		const remainingCaptions = totalCaptions - editor.currentIdx;
+		return remainingCaptions;
+  	}
+
+	function getCaptionPosition(editor: Editor) {
+		return editor.currentIdx;
+  	}
+
 	onMount(() => {
 		const track = video.addTextTrack('captions', 'Captions', 'en');
 		track.mode = 'showing';
@@ -38,14 +48,14 @@
 		<track kind="captions" />
 	</video>
 	<div class="statistics-container">
-		<div class="statistics-box">
-			<p class="statistics-label">Remaining Captions:</p>
-			<p class="statistics-count">75</p>
-		</div>
-		<div class="statistics-box">
-			<p class="statistics-label">Edited Captions:</p>
-			<p class="statistics-count">0</p>
-		</div>
+			<div class="statistics-box">
+				<p class="statistics-label">Remaining Captions:</p>
+				<p class="statistics-count">{getRemainingCaptions(editor)}</p>
+			</div>
+			<div class="statistics-box">
+				<p class="statistics-label">You are at Caption:</p>
+				<p class="statistics-count">{getCaptionPosition(editor)}</p>
+			</div>
 	</div>
 </div>
 
