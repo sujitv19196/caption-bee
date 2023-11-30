@@ -5,13 +5,15 @@ export class Editor {
     private _video: VideoController;
     private _captions: Caption[];
     private _currentIdx: number;
-    private _navigationListeners: ((currentIdx: number) => void)[];
+    private _prevIdx: number;
+    private _navigationListeners: ((currentIdx: number,prevIdx: number) => void)[];
     private _uncertaintyThreshold: number;
 
     public constructor(captions: Caption[]) {
         this._video = new VideoController();
         this._captions = captions;
         this._currentIdx = 0;
+        this._prevIdx = this.currentIdx;
         this._navigationListeners = [];
         this._uncertaintyThreshold = 0.7;
     }
@@ -28,35 +30,43 @@ export class Editor {
         return this._currentIdx;
     }
 
+    get prevIdx(): number {
+        return this._prevIdx;
+    }
+
     get currentCaption(): Caption {
         return this._captions[this._currentIdx];
     }
 
     next() {
+        this._prevIdx=this.currentIdx;
         while (this._currentIdx < this._captions.length - 1) {
             this._currentIdx += 1;
             if (this._captions[this._currentIdx].score < this._uncertaintyThreshold) {
                 break;
             }
         }
+        console.log(this.prevIdx,this.currentIdx);
         for (const fn of this._navigationListeners) {
-            fn(this._currentIdx);
+            fn(this._currentIdx,this.prevIdx);
         }
     }
 
     previous() {
+        this._prevIdx=this.currentIdx;
         while (this._currentIdx > 0) {
             this._currentIdx -= 1;
             if (this._captions[this._currentIdx].score < this._uncertaintyThreshold) {
                 break;
             }
         }
+        console.log(this.prevIdx,this.currentIdx);
         for (const fn of this._navigationListeners) {
-            fn(this._currentIdx);
+            fn(this._currentIdx,this.prevIdx);
         }
     }
 
-    addNavigationListener(fn: (currentIdx: number) => void) {
+    addNavigationListener(fn: (currentIdx: number,prevIdx:number) => void) {
         this._navigationListeners.push(fn);
     }
 
