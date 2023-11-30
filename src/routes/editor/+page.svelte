@@ -2,25 +2,26 @@
 	import CaptionedVideo from '$lib/components/CaptionedVideo.svelte';
 	import CaptionsPane from '$lib/components/CaptionsPane.svelte';
 	import SettingsMenu from '$lib/components/SettingsMenu.svelte';
-	import { Caption, type SerializedCaption } from '$lib/utils/captions';
+	import { Caption } from '$lib/utils/captions';
 	import { Editor } from '$lib/utils/editor';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
+	let settings: { [key: string]: any } = {};
+
 	const captions = Caption.deserializeCaptions(data.captions);
 	const editor = new Editor(captions);
 
-	let settings: { [key: string]: any } = {};
-
 	function handleSettingsChange(updatedSettings: { [key: string]: any }) {
 		settings = updatedSettings.detail;
+		editor.setUncertaintyThreshold(settings['mediumAccuracyThreshold']);
+
 		const lightTheme = settings.lightTheme;
 		if (lightTheme) {
 			document.documentElement.style.setProperty('--color-bg-1', '#eff8ff'); // Light background color
-      		document.documentElement.style.setProperty('--color-fg-1', '#333333'); // Dark text color
-		} 
-		else {
+			document.documentElement.style.setProperty('--color-fg-1', '#333333'); // Dark text color
+		} else {
 			// Reset to default theme styles
 			document.documentElement.style.removeProperty('--color-bg-1');
 			document.documentElement.style.removeProperty('--color-fg-1');
