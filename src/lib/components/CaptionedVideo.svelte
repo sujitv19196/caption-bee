@@ -14,18 +14,18 @@
 
 	let video: HTMLVideoElement;
 
-	let totalCaptions=0;
-	let remainingCaptions=0;
-	let currentPos=0;
+	let totalCaptions = 0;
+	let remainingCaptions = 0;
+	let currentPos = 0;
 
 	function getRemainingCaptions(editor: Editor) {
 		totalCaptions = editor.captions.length;
 		remainingCaptions = totalCaptions - editor.currentIdx;
-  	}
+	}
 
 	function getCaptionPosition(editor: Editor) {
-		currentPos=editor.currentIdx;
-  	}
+		currentPos = editor.currentIdx;
+	}
 
 	editor.addNavigationListener(() => {
 		getRemainingCaptions(editor);
@@ -58,14 +58,14 @@
 		<track kind="captions" />
 	</video>
 	<div class="statistics-container">
-			<div class="statistics-box">
-				<p class="statistics-label">Remaining Captions:</p>
-				<p class="statistics-count">{remainingCaptions}</p>
-			</div>
-			<div class="statistics-box">
-				<p class="statistics-label">You are at Caption:</p>
-				<p class="statistics-count">{currentPos}</p>
-			</div>
+		<div class="statistics-box">
+			<p class="statistics-label">Remaining Captions:</p>
+			<p class="statistics-count">{remainingCaptions}</p>
+		</div>
+		<div class="statistics-box">
+			<p class="statistics-label">Edited Captions:</p>
+			<p class="statistics-count">{currentPos}</p>
+		</div>
 	</div>
 </div>
 
@@ -86,7 +86,8 @@
 		border: 2px solid #3498db; /* Border color */
 		border-radius: 8px;
 		text-align: center;
-		background-color: white; /* Set background color */
+		background-color: var(--color-bg-1);
+		color: white;
 	}
 
 	.statistics-label {
