@@ -6,12 +6,14 @@ export class Editor {
     private _captions: Caption[];
     private _currentIdx: number;
     private _navigationListeners: ((currentIdx: number) => void)[];
+    private _uncertaintyThreshold: number;
 
     public constructor(captions: Caption[]) {
         this._video = new VideoController();
         this._captions = captions;
         this._currentIdx = 0;
         this._navigationListeners = [];
+        this._uncertaintyThreshold = 0.7;
     }
 
     get video(): VideoController {
@@ -31,8 +33,11 @@ export class Editor {
     }
 
     next() {
-        if (this._currentIdx < this._captions.length - 1) {
+        while (this._currentIdx < this._captions.length - 1) {
             this._currentIdx += 1;
+            if (this._captions[this._currentIdx].score < this._uncertaintyThreshold) {
+                break;
+            }
         }
         for (const fn of this._navigationListeners) {
             fn(this._currentIdx);
@@ -40,8 +45,11 @@ export class Editor {
     }
 
     previous() {
-        if (this._currentIdx > 0) {
+        while (this._currentIdx > 0) {
             this._currentIdx -= 1;
+            if (this._captions[this._currentIdx].score < this._uncertaintyThreshold) {
+                break;
+            } 
         }
         for (const fn of this._navigationListeners) {
             fn(this._currentIdx);
@@ -54,5 +62,9 @@ export class Editor {
 
     setCaption(caption: Caption, idx: number): void {
         this._captions[idx] = caption;
+    }
+
+    setUncertaintyThreshold(uncertaintyThreshold: number): void {
+        this._uncertaintyThreshold = uncertaintyThreshold;
     }
 }
