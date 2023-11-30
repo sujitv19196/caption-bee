@@ -49,7 +49,7 @@ export class Editor {
             this._currentIdx -= 1;
             if (this._captions[this._currentIdx].score < this._uncertaintyThreshold) {
                 break;
-            } 
+            }
         }
         for (const fn of this._navigationListeners) {
             fn(this._currentIdx);

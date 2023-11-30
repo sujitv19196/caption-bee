@@ -15,7 +15,7 @@
 
 	function handleSettingsChange(updatedSettings: { [key: string]: any }) {
 		settings = updatedSettings.detail;
-		editor.setUncertaintyThreshold(settings['mediumAccuracyThreshold']);
+		editor.setUncertaintyThreshold(settings['highAccuracyThreshold']);
 
 		const lightTheme = settings.lightTheme;
 		if (lightTheme) {
