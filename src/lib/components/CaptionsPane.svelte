@@ -106,17 +106,17 @@
 								<input
 									class="current-caption-speaker"
 									bind:value={$currentCaptionSpeaker}
-									placeholder="Enter Speaker Name"
+									placeholder="Speaker"
 									spellcheck="true"
 									use:focus
 								/>
 							{/if}
-							<input
+							<textarea
 								class="current-caption"
 								style="color: {getCaptionColor(score)}"
 								bind:value={$currentCaptionText}
 								spellcheck="true"
-								use:focus
+								rows="2"
 							/>
 						{:else}
 							<span class="caption-timestamp">
@@ -172,14 +172,14 @@
 		font-size: 18px;
 	}
 	.current-caption {
-		width: calc(90% - 250px);
+		width: 85%;
 		background: none;
 		border: none;
 		font-family: Arial;
 		font-size: 18px;
 	}
 	.current-caption-speaker {
-		width: calc(32.5% - 250px);
+		width: 15%;
 		background: none;
 		border: none;
 		font-family: Arial;
