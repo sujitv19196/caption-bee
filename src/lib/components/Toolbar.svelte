@@ -52,35 +52,35 @@
 		paused = editor.video.paused;
 
 		if (currentTime < lowerBound) {
-			slider.style.background = 'var(--color-bg-2)';
+			slider.style.background = 'var(--range-slider)';
 		} else if (currentTime > upperBound) {
-			slider.style.background = 'var(--color-fg-3)';
+			slider.style.background = 'var(--range-slider-progress)';
 		} else {
 			const percent = ((100 * (currentTime - lowerBound)) / duration).toFixed(4);
-			slider.style.background = `linear-gradient(to right, var(--color-fg-3) ${percent}%, var(--color-bg-2) ${percent}%)`;
+			slider.style.background = `linear-gradient(to right, var(--range-slider-progress) ${percent}%, var(--range-slider) ${percent}%)`;
 		}
 
 		if (!sliderActive) {
 			if (currentTime < startTime) {
-				sliderBar.style.background = 'var(--color-fg-2)';
+				sliderBar.style.background = 'var(--range-bar)';
 			} else if (currentTime > endTime) {
-				sliderBar.style.background = 'var(--color-fg-1)';
+				sliderBar.style.background = 'var(--range-bar-progress)';
 			} else {
 				const percent = ((100 * (currentTime - startTime)) / captionDuration).toFixed(4);
-				sliderBar.style.background = `linear-gradient(to right, var(--color-fg-1) ${percent}%, var(--color-fg-2) ${percent}%)`;
+				sliderBar.style.background = `linear-gradient(to right, var(--range-bar-progress) ${percent}%, var(--range-bar) ${percent}%)`;
 			}
 			sliderBar.style.transition = 'none';
 
 			if (currentTime < startTime) {
-				sliderNubLeft.style.background = 'var(--color-fg-2)';
+				sliderNubLeft.style.background = 'var(--range-bar)';
 			} else {
-				sliderNubLeft.style.background = 'var(--color-fg-1)';
+				sliderNubLeft.style.background = 'var(--range-bar-progress)';
 			}
 
 			if (currentTime < endTime) {
-				sliderNubRight.style.background = 'var(--color-fg-2)';
+				sliderNubRight.style.background = 'var(--range-bar)';
 			} else {
-				sliderNubRight.style.background = 'var(--color-fg-1)';
+				sliderNubRight.style.background = 'var(--range-bar-progress)';
 			}
 		} else {
 			sliderBar.style.removeProperty('background');
@@ -142,6 +142,7 @@
 	}
 
 	function onNext() {
+		editor.currentCaption.edited = true;
 		editor.next();
 		onNavigation();
 		updateCaptionScore();
@@ -216,10 +217,11 @@
 	.toolbar {
 		width: 100%;
 		height: 100px;
-		background-color: rgba(62, 62, 62, 0.7);
+		background-color: var(--color-bg-3a);
 		-webkit-backdrop-filter: blur(10px);
 		backdrop-filter: blur(10px);
 		border-radius: 10px;
+		box-shadow: var(--color-shadow) 0 1px 1px 1px;
 	}
 	.divider {
 		height: 1px;
@@ -266,5 +268,6 @@
 	}
 	.accent-button {
 		background-color: var(--color-accent);
+		color: var(--color-accent-text);
 	}
 </style>

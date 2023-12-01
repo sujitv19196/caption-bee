@@ -17,7 +17,7 @@
 	let totalCaptions = 0;
 	let remainingCaptions = 0;
 	let finishedCaptions = 0;
-	let skippedCaptions=0;
+	let skippedCaptions = 0;
 
 	function getRemainingCaptions() {
 		totalCaptions = editor.captions.length;
@@ -25,25 +25,21 @@
 	}
 
 	function getFinishedCaptions() {
-		finishedCaptions=editor.currentIdx;
+		finishedCaptions = editor.currentIdx;
 	}
 
-	function getSkippedCaptions(){
+	function getSkippedCaptions() {
 		//done button is clicked
-		if(editor.currentIdx>editor.prevIdx)
-		{
-			if(editor.currentIdx-editor.prevIdx>1)
-			skippedCaptions=skippedCaptions+(editor.currentIdx-editor.prevIdx-1);
+		if (editor.currentIdx > editor.prevIdx) {
+			if (editor.currentIdx - editor.prevIdx > 1)
+				skippedCaptions = skippedCaptions + (editor.currentIdx - editor.prevIdx - 1);
 		}
 		//prev button is clicked
-		if(editor.prevIdx>editor.currentIdx)
-		{
-			if(editor.prevIdx-editor.currentIdx>1)
-			{
-				if((skippedCaptions-(editor.prevIdx-editor.currentIdx-1))>=0)
-					skippedCaptions=skippedCaptions-(editor.prevIdx-editor.currentIdx-1);
-				else
-					skippedCaptions=0;
+		if (editor.prevIdx > editor.currentIdx) {
+			if (editor.prevIdx - editor.currentIdx > 1) {
+				if (skippedCaptions - (editor.prevIdx - editor.currentIdx - 1) >= 0)
+					skippedCaptions = skippedCaptions - (editor.prevIdx - editor.currentIdx - 1);
+				else skippedCaptions = 0;
 			}
 		}
 	}
@@ -114,7 +110,6 @@
 		border-radius: 8px;
 		text-align: center;
 		background-color: var(--color-bg-1);
-		color: white;
 	}
 
 	.statistics-label {

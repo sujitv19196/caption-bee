@@ -4,6 +4,7 @@
 	import SettingsMenu from '$lib/components/SettingsMenu.svelte';
 	import { Caption } from '$lib/utils/captions';
 	import { Editor } from '$lib/utils/editor';
+	import { currentTheme } from '$lib/utils/stores';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -18,14 +19,11 @@
 		editor.setAdvancedMode(settings['advancedMode']);
 		editor.setUncertaintyThreshold(settings['highAccuracyThreshold']);
 
-		const lightTheme = settings.lightTheme;
-		if (lightTheme) {
-			document.documentElement.style.setProperty('--color-bg-1', '#eff8ff'); // Light background color
-			document.documentElement.style.setProperty('--color-fg-1', '#333333'); // Dark text color
+		const isLightTheme = settings.lightTheme;
+		if (isLightTheme) {
+			currentTheme.set('light-theme');
 		} else {
-			// Reset to default theme styles
-			document.documentElement.style.removeProperty('--color-bg-1');
-			document.documentElement.style.removeProperty('--color-fg-1');
+			currentTheme.set('dark-theme');
 		}
 	}
 
@@ -99,7 +97,7 @@
 	}
 	#splitter {
 		width: 1px;
-		background-color: var(--color-bg-3);
+		background-color: var(--color-border);
 	}
 	#splitterHover {
 		width: 1px;
@@ -107,7 +105,7 @@
 	}
 	#rightPane {
 		flex: 1;
-		background: radial-gradient(ellipse at center, var(--color-bg-2) 60%, var(--color-bg-1) 120%);
+		background-color: var(--color-bg-2);
 	}
 	#settingsMenu {
 		position: absolute;

@@ -56,11 +56,9 @@
 		display: flex;
 		align-items: center;
 		margin: 10px;
-		color: white;
 	}
 
 	label {
 		margin-right: 10px;
-		color: white;
 	}
 </style>

@@ -15,6 +15,7 @@ export class Caption {
     private _speakerName: Writable<string>;
     private _originalText: string;
     private _score: number;
+    private _edited: boolean;
     private _next: Caption | null = null;
     private _previous: Caption | null = null;
     private _vttCue: VTTCue;
@@ -60,7 +61,7 @@ export class Caption {
     }
 
     get speaker(): string {
-        return get(this._speakerName)
+        return get(this._speakerName);
     }
 
     get originalText(): string {
@@ -68,11 +69,19 @@ export class Caption {
     }
 
     get score(): number {
-        return this._score
+        return this._score;
     }
 
     set score(value: number) {
         this._score = value;
+    }
+
+    get edited(): boolean {
+        return this._edited
+    }
+
+    set edited(value: boolean) {
+        this._edited = value;
     }
 
     get next(): Caption | null {
@@ -94,6 +103,7 @@ export class Caption {
         this._speakerName = writable("")
         this._originalText = serialized.originalText ?? serialized.text;
         this._score = serialized.score;
+        this._edited = false;
         this._vttCue = new VTTCue(this.startTime, this.endTime, this.text);
 
         this._startTimeStore.subscribe((value: number) => {

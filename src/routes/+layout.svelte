@@ -1,8 +1,15 @@
-<script>
+<script lang="ts">
+	import { currentTheme } from '$lib/utils/stores';
 	import './styles.css';
+
+	let appTheme = 'light-theme';
+
+	currentTheme.subscribe((theme) => {
+		appTheme = theme;
+	});
 </script>
 
-<div id="app">
+<div id="app" class={appTheme}>
 	<slot />
 </div>
 

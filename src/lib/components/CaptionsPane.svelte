@@ -4,6 +4,7 @@
 	import type { Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import Toolbar from './Toolbar.svelte';
+	import type { Caption } from '$lib/utils/captions';
 	import type { Editor } from '$lib/utils/editor';
 
 	export let editor: Editor;
@@ -43,14 +44,20 @@
 	}
 
 	// Change text color based on caption accuracy
-	function getCaptionColor(score: number) {
-		if (score >= settings['highAccuracyThreshold']) {
-			return '#4CAF50'; // High accuracy, dark green color
-		} else if (score >= settings['mediumAccuracyThreshold']) {
-			return '#FFC107'; // Medium accuracy, amber color
+	function getColorSuffix(caption: Caption) {
+		if (caption.score >= settings['highAccuracyThreshold']) {
+			return 'default'; // High accuracy, default color
+		} else if (caption.edited) {
+			return 'edited';
+		} else if (caption.score >= settings['mediumAccuracyThreshold']) {
+			return 'medium'; // Medium accuracy, amber color
 		} else {
-			return '#F44336'; // Low accuracy, dark red color
+			return 'low'; // Low accuracy, dark red color
 		}
+	}
+
+	function gradientFrom(color: string) {
+		return `linear-gradient(to right, ${color} -20px, var(--color-fg-2) 200px)`;
 	}
 
 	$: {
@@ -125,7 +132,6 @@
 			{#each captionOffsets as offset, i (firstVisibleIdx + i)}
 				{@const idx = firstVisibleIdx + i}
 				{@const caption = editor.captions[idx]}
-				{@const score = caption.score}
 
 				<div
 					class="caption-row"
@@ -134,7 +140,7 @@
 				>
 					<div class="caption">
 						{#if idx === editor.currentIdx}
-							<span class="caption-timestamp">
+							<span class="caption-timestamp caption-timestamp-{getColorSuffix(caption)}">
 								{new Date($currentCaptionStart * 1000).toISOString().slice(11, 19)}
 							</span>
 							{#if settings['enableSpeakerNames']}
@@ -148,24 +154,21 @@
 							{/if}
 							<input
 								class="current-caption"
-								style="color: {getCaptionColor(score)}"
 								bind:value={$currentCaptionText}
 								spellcheck="true"
 								use:focus
 							/>
 						{:else}
-							<span class="caption-timestamp">
+							<span class="caption-timestamp caption-timestamp-{getColorSuffix(caption)}">
 								{new Date(caption.startTime * 1000).toISOString().slice(11, 19)}
 							</span>
-							{#if settings['enableSpeakerNames'] && caption.speaker != ''}
-								<div class="caption-text" style="color: {getCaptionColor(score)}">
+							<div class="caption-text caption-text-{getColorSuffix(caption)}">
+								{#if settings['enableSpeakerNames'] && caption.speaker != ''}
 									{`[${caption.speaker}] ${caption.text}`}
-								</div>
-							{:else}
-								<div class="caption-text" style="color: {getCaptionColor(score)}">
+								{:else}
 									{caption.text}
-								</div>
-							{/if}
+								{/if}
+							</div>
 						{/if}
 					</div>
 				</div>
@@ -199,12 +202,13 @@
 	.caption-timestamp {
 		padding-left: 50px;
 		width: 100px;
-		font-size: 12px;
+		font-size: 14px;
 		color: var(--color-fg-3);
 	}
 	.caption-text {
 		width: calc(100% - 250px);
 		font-size: 18px;
+		color: var(--color-fg-2);
 	}
 	.current-caption {
 		width: calc(90% - 250px);
@@ -212,6 +216,7 @@
 		border: none;
 		font-family: Arial;
 		font-size: 18px;
+		color: var(--color-fg-1);
 	}
 	.current-caption-speaker {
 		width: calc(32.5% - 250px);
@@ -225,5 +230,22 @@
 	.toolbar-container {
 		left: 150px;
 		width: calc(100% - 250px);
+	}
+
+	.caption-timestamp-medium {
+		color: var(--medium-confidence);
+	}
+	.caption-timestamp-low {
+		color: var(--low-confidence);
+	}
+	.caption-timestamp-edited {
+		color: var(--edited);
+	}
+
+	.caption-text-medium {
+		text-decoration: var(--medium-confidence) dotted underline 3px;
+	}
+	.caption-text-low {
+		text-decoration: var(--low-confidence) dotted underline 3px;
 	}
 </style>
