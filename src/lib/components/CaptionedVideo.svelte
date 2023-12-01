@@ -78,16 +78,16 @@
 	</video>
 	<div class="statistics-container">
 		<div class="statistics-box">
-			<p class="statistics-label">Remaining Captions:</p>
-			<p class="statistics-count">{remainingCaptions}</p>
+			<p class="statistics-label">Remaining:</p>
+			<p style="color: var(--medium-confidence)">{remainingCaptions}</p>
 		</div>
 		<div class="statistics-box">
-			<p class="statistics-label">Finished Captions:</p>
-			<p class="statistics-count">{finishedCaptions}</p>
+			<p class="statistics-label">Finished:</p>
+			<p style="color: var(--edited)">{finishedCaptions}</p>
 		</div>
 		<div class="statistics-box">
-			<p class="statistics-label">Skipped Captions:</p>
-			<p class="statistics-count">{skippedCaptions}</p>
+			<p class="statistics-label">Skipped:</p>
+			<p style="color: var(--color-fg-3)">{skippedCaptions}</p>
 		</div>
 	</div>
 </div>
@@ -105,19 +105,14 @@
 	}
 
 	.statistics-box {
-		padding: 10px;
-		border: 2px solid #3498db; /* Border color */
-		border-radius: 8px;
+		width: 33%;
 		text-align: center;
-		background-color: var(--color-bg-1);
+		font-size: 18px;
 	}
 
 	.statistics-label {
 		font-weight: bold;
 		margin-bottom: 5px;
-	}
-
-	.statistics-count {
-		font-size: 18px;
+		color: var(--color-fg-2);
 	}
 </style>

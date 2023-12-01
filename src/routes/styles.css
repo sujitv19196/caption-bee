@@ -23,8 +23,8 @@
 	--color-shadow: var(--color-bg-1);
 	--range-slider: var(--color-bg-2);
 	--range-slider-progress: var(--color-fg-3);
-	--range-bar: var(--color-fg-2);
-	--range-bar-progress: var(--color-fg-1);
+	--range-handle-inactive: var(--color-fg-2);
+	--range-handle-inactive-progress: var(--color-fg-1);
 	color: var(--color-fg-1);
 }
 
@@ -44,8 +44,8 @@
 	--color-shadow: var(--color-fg-4);
 	--range-slider: var(--color-bg-2);
 	--range-slider-progress: var(--color-fg-4);
-	--range-bar: var(--color-fg-3);
-	--range-bar-progress: var(--color-fg-1);
+	--range-handle-inactive: var(--color-fg-3);
+	--range-handle-inactive-progress: var(--color-fg-1);
 	color: var(--color-fg-1);
 }
 
@@ -55,10 +55,10 @@ body {
 	font-family: Arial;
 }
 
-.select-dark {
+.select {
 	appearance: none;
 	-webkit-appearance: none;
-	background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' height='0.8em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path fill='rgb(194, 194, 194)' d='M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'/></svg>") no-repeat;
+	background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' height='0.8em' viewBox='0 0 512 512'><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path fill='rgb(170, 170, 170)' d='M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'/></svg>") no-repeat;
 	background-position: right 3px center;
 	padding-right: 1.4em;
 }

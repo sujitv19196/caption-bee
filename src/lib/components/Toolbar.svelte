@@ -39,6 +39,10 @@
 	}
 	onNavigation();
 
+	editor.addNavigationListener(() => {
+		onNavigation();
+	});
+
 	let currentTime = 0;
 	let paused = true;
 	let slider: HTMLElement;
@@ -62,25 +66,25 @@
 
 		if (!sliderActive) {
 			if (currentTime < startTime) {
-				sliderBar.style.background = 'var(--range-bar)';
+				sliderBar.style.background = 'var(--range-handle-inactive)';
 			} else if (currentTime > endTime) {
-				sliderBar.style.background = 'var(--range-bar-progress)';
+				sliderBar.style.background = 'var(--range-handle-inactive-progress)';
 			} else {
 				const percent = ((100 * (currentTime - startTime)) / captionDuration).toFixed(4);
-				sliderBar.style.background = `linear-gradient(to right, var(--range-bar-progress) ${percent}%, var(--range-bar) ${percent}%)`;
+				sliderBar.style.background = `linear-gradient(to right, var(--range-handle-inactive-progress) ${percent}%, var(--range-handle-inactive) ${percent}%)`;
 			}
 			sliderBar.style.transition = 'none';
 
 			if (currentTime < startTime) {
-				sliderNubLeft.style.background = 'var(--range-bar)';
+				sliderNubLeft.style.background = 'var(--range-handle-inactive)';
 			} else {
-				sliderNubLeft.style.background = 'var(--range-bar-progress)';
+				sliderNubLeft.style.background = 'var(--range-handle-inactive-progress)';
 			}
 
 			if (currentTime < endTime) {
-				sliderNubRight.style.background = 'var(--range-bar)';
+				sliderNubRight.style.background = 'var(--range-handle-inactive)';
 			} else {
-				sliderNubRight.style.background = 'var(--range-bar-progress)';
+				sliderNubRight.style.background = 'var(--range-handle-inactive-progress)';
 			}
 		} else {
 			sliderBar.style.removeProperty('background');
@@ -129,28 +133,16 @@
 		editor.video.paused = !editor.video.paused;
 	}
 
-	function updateCaptionScore() {
-		prevCaption = currentCaption.previous;
-		// Update score only when user edits text and clicks next
-		if (prevCaption?.text !== prevCaption?.originalText) {
-			prevCaption ? (prevCaption.score = 1) : null; // Set score to 1 if user edits text
-		}
-	}
-
 	function reset() {
 		currentCaption.text = currentCaption.originalText;
 	}
 
-	function onNext() {
-		editor.currentCaption.edited = true;
+	function next() {
 		editor.next();
-		onNavigation();
-		updateCaptionScore();
 	}
 
-	function onPrevious() {
+	function previous() {
 		editor.previous();
-		onNavigation();
 	}
 </script>
 
@@ -192,7 +184,7 @@
 			{/if}
 		</button>
 
-		<select class="slider-dropdown select-dark clickable" bind:value={editor.video.playbackRate}>
+		<select class="slider-button select clickable" bind:value={editor.video.playbackRate}>
 			<option value={0.5}>0.5x</option>
 			<option value={0.75}>0.75x</option>
 			<option value={1}>1x</option>
@@ -206,10 +198,10 @@
 	<div class="toolbar-button-row">
 		<button class="toolbar-button clickable" on:click={reset}>reset</button>
 
-		<button class="toolbar-button clickable" style="margin-left: auto;" on:click={onPrevious}
+		<button class="toolbar-button clickable" style="margin-left: auto;" on:click={previous}
 			>previous</button
 		>
-		<button class="accent-button clickable" on:click={onNext}>done</button>
+		<button class="accent-button clickable" on:click={next}>done</button>
 	</div>
 </div>
 
@@ -237,30 +229,29 @@
 		color: var(--color-fg-2);
 	}
 	.toolbar-button-row {
-		height: 48px;
+		height: 46px;
 		justify-content: right;
 		padding-left: 5px;
 		padding-right: 5px;
 	}
-	.slider-button,
-	.slider-dropdown {
+	.slider-button {
 		min-width: 30px;
 		margin-right: 10px;
 		border: none;
 		font-size: 16px;
 		color: var(--color-fg-2);
 	}
-	.slider-button {
+	button.slider-button {
 		background: none;
 	}
 	.toolbar-button,
 	.accent-button {
-		height: 25px;
+		height: 28px;
 		margin-left: 5px;
 		margin-right: 5px;
 		border: none;
 		border-radius: 5px;
-		font-size: 12px;
+		font-size: 14px;
 		color: var(--color-fg-1);
 	}
 	.toolbar-button {

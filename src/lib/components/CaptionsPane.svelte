@@ -56,10 +56,6 @@
 		}
 	}
 
-	function gradientFrom(color: string) {
-		return `linear-gradient(to right, ${color} -20px, var(--color-fg-2) 200px)`;
-	}
-
 	$: {
 		numVisibleCaptions = Math.floor((height - minMiddleZoneHeight) / captionHeight);
 		middleZoneHeight = height - numVisibleCaptions * captionHeight;
@@ -69,13 +65,13 @@
 		updateVisibleCaptions();
 		// update settings on change
 		settings;
-		console.log('bruh');
 	}
 
 	let currentCaptionStart: Writable<number>;
 	let currentCaptionEnd: Writable<number>;
 	let currentCaptionText: Writable<string>;
 	let currentCaptionSpeaker: Writable<string>;
+
 	function updateStores() {
 		currentCaptionStart = editor.currentCaption.startTimeStore;
 		currentCaptionEnd = editor.currentCaption.endTimeStore;
@@ -107,7 +103,21 @@
 		oldIdx = currentIdx;
 	});
 
-	function focus(el: HTMLInputElement) {
+	document.addEventListener('keydown', (e: KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			if (e.ctrlKey || e.metaKey) {
+				editor.next();
+			} else if (editor.video.paused) {
+				editor.video.currentTime = Math.max(0, editor.currentCaption.startTime - 2);
+				editor.video.paused = false;
+			} else {
+				editor.video.paused = true;
+			}
+			e.preventDefault();
+		}
+	});
+
+	function focus(el: HTMLInputElement | HTMLTextAreaElement) {
 		el.focus();
 	}
 
@@ -156,7 +166,7 @@
 								class="current-caption"
 								bind:value={$currentCaptionText}
 								spellcheck="true"
-								rows="2"
+								use:focus
 							/>
 						{:else}
 							<span class="caption-timestamp caption-timestamp-{getColorSuffix(caption)}">
@@ -211,7 +221,8 @@
 		color: var(--color-fg-2);
 	}
 	.current-caption {
-		width: 85%;
+		width: calc(100% - 250px);
+		height: 1.2em;
 		background: none;
 		border: none;
 		font-family: Arial;
@@ -219,7 +230,7 @@
 		color: var(--color-fg-1);
 	}
 	.current-caption-speaker {
-		width: 15%;
+		width: 100px;
 		background: none;
 		border: none;
 		font-family: Arial;

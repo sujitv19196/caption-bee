@@ -6,7 +6,7 @@ export class Editor {
     private _captions: Caption[];
     private _currentIdx: number;
     private _prevIdx: number;
-    private _navigationListeners: ((currentIdx: number,prevIdx: number) => void)[];
+    private _navigationListeners: ((currentIdx: number, prevIdx: number) => void)[];
     private _advancedMode: boolean;
     private _uncertaintyThreshold: number;
 
@@ -41,7 +41,8 @@ export class Editor {
     }
 
     next() {
-        this._prevIdx=this.currentIdx;
+        this._captions[this._currentIdx].edited = true;
+        this._prevIdx = this.currentIdx;
         while (this._currentIdx < this._captions.length - 1) {
             this._currentIdx += 1;
             if (this._advancedMode || this._captions[this._currentIdx].score < this._uncertaintyThreshold) {
@@ -50,12 +51,12 @@ export class Editor {
         }
         //console.log(this.prevIdx,this.currentIdx);
         for (const fn of this._navigationListeners) {
-            fn(this._currentIdx,this.prevIdx);
+            fn(this._currentIdx, this.prevIdx);
         }
     }
 
     previous() {
-        this._prevIdx=this.currentIdx;
+        this._prevIdx = this.currentIdx;
         while (this._currentIdx > 0) {
             this._currentIdx -= 1;
             if (this._advancedMode || this._captions[this._currentIdx].score < this._uncertaintyThreshold) {
@@ -64,11 +65,11 @@ export class Editor {
         }
         //console.log(this.prevIdx,this.currentIdx);
         for (const fn of this._navigationListeners) {
-            fn(this._currentIdx,this.prevIdx);
+            fn(this._currentIdx, this.prevIdx);
         }
     }
 
-    addNavigationListener(fn: (currentIdx: number,prevIdx:number) => void) {
+    addNavigationListener(fn: (currentIdx: number, prevIdx: number) => void) {
         this._navigationListeners.push(fn);
     }
 
