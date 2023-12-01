@@ -199,7 +199,7 @@
 		width: 100%;
 		height: 100%;
 		position: relative;
-		overflow: scroll;
+		overflow: hidden;
 	}
 	.caption-row {
 		width: 100%;
