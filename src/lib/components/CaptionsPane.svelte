@@ -106,7 +106,11 @@
 	document.addEventListener('keydown', (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			if (e.ctrlKey || e.metaKey) {
-				editor.next();
+				if (e.shiftKey) {
+					editor.previous();
+				} else {
+					editor.next();
+				}
 			} else if (editor.video.paused) {
 				editor.video.currentTime = Math.max(0, editor.currentCaption.startTime - 2);
 				editor.video.paused = false;

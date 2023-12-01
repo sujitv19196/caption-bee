@@ -135,6 +135,7 @@
 
 	function reset() {
 		currentCaption.text = currentCaption.originalText;
+		currentCaption.edited = false;
 	}
 
 	function next() {
@@ -145,13 +146,6 @@
 		editor.previous();
 	}
 </script>
-
-<head>
-	<link
-		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-		rel="stylesheet"
-	/>
-</head>
 
 <div class="toolbar">
 	<div class="toolbar-slider-row">
@@ -198,9 +192,9 @@
 	<div class="toolbar-button-row">
 		<button class="toolbar-button clickable" on:click={reset}>reset</button>
 
-		<button class="toolbar-button clickable" style="margin-left: auto;" on:click={previous}
-			>previous</button
-		>
+		<button class="toolbar-button clickable" style="margin-left: auto;" on:click={previous}>
+			previous
+		</button>
 		<button class="accent-button clickable" on:click={next}>done</button>
 	</div>
 </div>

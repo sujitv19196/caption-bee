@@ -16,7 +16,7 @@
 
 	function handleSettingsChange(updatedSettings: { [key: string]: any }) {
 		settings = updatedSettings.detail;
-		editor.setAdvancedMode(settings['advancedMode']);
+		editor.setAdvancedMode(!settings['quickEdit']);
 		editor.setUncertaintyThreshold(settings['highAccuracyThreshold']);
 
 		const isLightTheme = settings.lightTheme;
@@ -72,22 +72,24 @@
 <svelte:window on:mousedown={onMouseDown} on:mouseup={onMouseUp} on:mousemove={onMouseMove} />
 
 <div id="content">
-	<div id="settingsMenu">
-		<SettingsMenu on:settingsChange={handleSettingsChange} />
-	</div>
 	<div id="leftPane" style="width: {leftPaneWidth}px;">
 		<CaptionedVideo videoSrc="/movie.mp4" {editor} hidden={leftPaneHidden} />
 	</div>
 
-	<div id={mouseNearSplitter ? 'splitterHover' : 'splitter'} />
+	<div id={mouseNearSplitter ? 'splitter-hover' : 'splitter'} />
 
-	<div id="rightPane">
+	<div id="right-pane">
 		<CaptionsPane {editor} {settings} />
 	</div>
 </div>
 
+<div id="settings-menu">
+	<SettingsMenu on:settingsChange={handleSettingsChange} />
+</div>
+
 <style>
 	#content {
+		position: relative;
 		display: flex;
 		flex-direction: row;
 		width: 100vw;
@@ -99,21 +101,17 @@
 		width: 1px;
 		background-color: var(--color-border);
 	}
-	#splitterHover {
+	#splitter-hover {
 		width: 1px;
 		background-color: var(--color-accent);
 	}
-	#rightPane {
+	#right-pane {
 		flex: 1;
 		background-color: var(--color-bg-2);
 	}
-	#settingsMenu {
+	#settings-menu {
 		position: absolute;
 		top: 10px;
 		right: 10px;
-		z-index: 1;
-		background: radial-gradient(ellipse at center, var(--color-bg-2) 60%, var(--color-bg-1) 120%);
-		padding: 10px;
-		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 	}
 </style>

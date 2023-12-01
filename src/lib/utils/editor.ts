@@ -49,7 +49,6 @@ export class Editor {
                 break;
             }
         }
-        //console.log(this.prevIdx,this.currentIdx);
         for (const fn of this._navigationListeners) {
             fn(this._currentIdx, this.prevIdx);
         }
@@ -63,7 +62,6 @@ export class Editor {
                 break;
             }
         }
-        //console.log(this.prevIdx,this.currentIdx);
         for (const fn of this._navigationListeners) {
             fn(this._currentIdx, this.prevIdx);
         }
