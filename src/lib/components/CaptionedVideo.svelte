@@ -16,20 +16,42 @@
 
 	let totalCaptions = 0;
 	let remainingCaptions = 0;
-	let currentPos = 0;
+	let finishedCaptions = 0;
+	let skippedCaptions=0;
 
-	function getRemainingCaptions(editor: Editor) {
+	function getRemainingCaptions() {
 		totalCaptions = editor.captions.length;
 		remainingCaptions = totalCaptions - editor.currentIdx;
 	}
 
-	function getCaptionPosition(editor: Editor) {
-		currentPos = editor.currentIdx;
+	function getFinishedCaptions() {
+		finishedCaptions=editor.currentIdx;
+	}
+
+	function getSkippedCaptions(){
+		//done button is clicked
+		if(editor.currentIdx>editor.prevIdx)
+		{
+			if(editor.currentIdx-editor.prevIdx>1)
+			skippedCaptions=skippedCaptions+(editor.currentIdx-editor.prevIdx-1);
+		}
+		//prev button is clicked
+		if(editor.prevIdx>editor.currentIdx)
+		{
+			if(editor.prevIdx-editor.currentIdx>1)
+			{
+				if((skippedCaptions-(editor.prevIdx-editor.currentIdx-1))>=0)
+					skippedCaptions=skippedCaptions-(editor.prevIdx-editor.currentIdx-1);
+				else
+					skippedCaptions=0;
+			}
+		}
 	}
 
 	editor.addNavigationListener(() => {
-		getRemainingCaptions(editor);
-		getCaptionPosition(editor);
+		getRemainingCaptions();
+		getFinishedCaptions();
+		getSkippedCaptions();
 	});
 
 	onMount(() => {
@@ -38,8 +60,9 @@
 		for (const caption of editor.captions) {
 			track.addCue(caption.vttCue);
 		}
-		getRemainingCaptions(editor);
-		getCaptionPosition(editor);
+		getRemainingCaptions();
+		getFinishedCaptions();
+		getSkippedCaptions();
 	});
 </script>
 
@@ -63,8 +86,12 @@
 			<p class="statistics-count">{remainingCaptions}</p>
 		</div>
 		<div class="statistics-box">
-			<p class="statistics-label">Edited Captions:</p>
-			<p class="statistics-count">{currentPos}</p>
+			<p class="statistics-label">Finished Captions:</p>
+			<p class="statistics-count">{finishedCaptions}</p>
+		</div>
+		<div class="statistics-box">
+			<p class="statistics-label">Skipped Captions:</p>
+			<p class="statistics-count">{skippedCaptions}</p>
 		</div>
 	</div>
 </div>

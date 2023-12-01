@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import type { Writable } from 'svelte/store';
+	import { afterUpdate, onMount } from 'svelte';
 	import { flip } from 'svelte/animate';
+	import type { Writable } from 'svelte/store';
+	import { fly } from 'svelte/transition';
 	import Toolbar from './Toolbar.svelte';
 	import type { Editor } from '$lib/utils/editor';
 
@@ -16,15 +17,20 @@
 	let numVisibleCaptions: number;
 	let middleZoneY: number;
 	let middleZoneHeight: number;
+	let numCaptionsAbove: number;
+	let numCaptionsBelow: number;
 
 	let firstVisibleIdx = 0;
 	let captionOffsets: number[] = [];
 
 	function updateVisibleCaptions() {
-		firstVisibleIdx = Math.max(0, editor.currentIdx - numVisibleCaptions);
-		const lastIdx = Math.min(editor.captions.length, editor.currentIdx + numVisibleCaptions);
+		firstVisibleIdx = Math.max(0, editor.currentIdx - numCaptionsAbove);
+		const lastVisibleIdx = Math.min(
+			editor.captions.length - 1,
+			editor.currentIdx + numCaptionsBelow
+		);
 		captionOffsets = [];
-		for (let i = firstVisibleIdx; i < lastIdx; i++) {
+		for (let i = firstVisibleIdx; i <= lastVisibleIdx; i++) {
 			const relativeIdx = i - editor.currentIdx;
 			if (relativeIdx == 0) {
 				captionOffsets.push(middleZoneY + toolbarHeight);
@@ -51,9 +57,12 @@
 		numVisibleCaptions = Math.floor((height - minMiddleZoneHeight) / captionHeight);
 		middleZoneHeight = height - numVisibleCaptions * captionHeight;
 		middleZoneY = captionHeight * Math.floor(numVisibleCaptions / 2);
+		numCaptionsAbove = Math.floor((3 * numVisibleCaptions) / 2);
+		numCaptionsBelow = Math.ceil((3 * numVisibleCaptions) / 2);
 		updateVisibleCaptions();
 		// update settings on change
 		settings;
+		console.log('bruh');
 	}
 
 	let currentCaptionStart: Writable<number>;
@@ -68,32 +77,58 @@
 	}
 	updateStores();
 
-	editor.addNavigationListener(() => {
+	let oldIdx = 0;
+	let inAnimation = { x: 50, duration: 150, delay: 100 };
+	let outAnimation = { x: -50, duration: 150 };
+	let skipScroll = false;
+
+	editor.addNavigationListener((currentIdx) => {
 		updateVisibleCaptions();
 		updateStores();
+
+		if (currentIdx < oldIdx) {
+			inAnimation.x = -50;
+			outAnimation.x = 50;
+		} else {
+			inAnimation.x = 50;
+			outAnimation.x = -50;
+		}
+
+		if (Math.abs(currentIdx - oldIdx) > numVisibleCaptions) {
+			skipScroll = true;
+		}
+		oldIdx = currentIdx;
 	});
 
 	function focus(el: HTMLInputElement) {
 		el.focus();
 	}
 
+	let captionsContainer: HTMLElement;
 	onMount(() => {
 		updateVisibleCaptions();
+		captionsContainer.addEventListener('scroll', () => {
+			if (captionsContainer.scrollTop != 0) {
+				captionsContainer.scrollTo(0, 0);
+			}
+		});
+	});
+
+	afterUpdate(() => {
+		skipScroll = false;
 	});
 </script>
 
-<div class="captions-container" bind:clientHeight={height}>
-	<div class="captions-view">
-		{#if !editor.captions.length}
-			<p>No captions available</p>
-		{:else}
+<div class="captions-container" bind:clientHeight={height} bind:this={captionsContainer}>
+	{#key skipScroll}
+		<div class="captions-view" in:fly={inAnimation} out:fly={outAnimation}>
 			{#each captionOffsets as offset, i (firstVisibleIdx + i)}
 				{@const idx = firstVisibleIdx + i}
 				{@const caption = editor.captions[idx]}
 				{@const score = caption.score}
 
 				<div
-					class="caption-container"
+					class="caption-row"
 					style="position: absolute; top: {offset}px; height: {captionHeight}px;"
 					animate:flip={{ duration: 250 }}
 				>
@@ -135,8 +170,8 @@
 					</div>
 				</div>
 			{/each}
-		{/if}
-	</div>
+		</div>
+	{/key}
 	<div class="toolbar-container" style="position: absolute; top: {middleZoneY + 25}px;">
 		<Toolbar {editor} />
 	</div>
@@ -147,9 +182,9 @@
 		width: 100%;
 		height: 100%;
 		position: relative;
-		overflow: hidden;
+		overflow: scroll;
 	}
-	.caption-container {
+	.caption-row {
 		width: 100%;
 		display: flex;
 		flex-direction: column;

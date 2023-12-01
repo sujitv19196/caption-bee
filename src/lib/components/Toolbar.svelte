@@ -174,7 +174,7 @@
 				formatter={formatTime}
 				pips
 				pipstep={25}
-				springValues={{ stiffness: 0.5, damping: 1 }}
+				springValues={{ stiffness: 0.2, damping: 0.5 }}
 				on:start={sliderStart}
 				on:stop={sliderStop}
 				on:change={sliderChange}

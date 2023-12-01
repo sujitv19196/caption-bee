@@ -15,12 +15,8 @@
 
 	function handleSettingsChange(updatedSettings: { [key: string]: any }) {
 		settings = updatedSettings.detail;
-		if (settings['advancedMode']) {
-			// if in advanced mode, go over every caption
-			editor.setUncertaintyThreshold(1);
-		} else {
-			editor.setUncertaintyThreshold(settings['highAccuracyThreshold']);
-		}
+		editor.setAdvancedMode(settings['advancedMode']);
+		editor.setUncertaintyThreshold(settings['highAccuracyThreshold']);
 
 		const lightTheme = settings.lightTheme;
 		if (lightTheme) {
