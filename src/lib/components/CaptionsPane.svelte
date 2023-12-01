@@ -243,9 +243,15 @@
 	}
 
 	.caption-text-medium {
-		text-decoration: var(--medium-confidence) dotted underline 3px;
+		text-decoration: var(--medium-confidence) dotted underline;
+		-webkit-text-decoration: var(--medium-confidence) dotted underline;
+		text-decoration-thickness: 3px;
+		-webkit-text-decoration-thickness: 3px;
 	}
 	.caption-text-low {
-		text-decoration: var(--low-confidence) dotted underline 3px;
+		text-decoration: var(--low-confidence) dotted underline;
+		-webkit-text-decoration: var(--low-confidence) dotted underline;
+		text-decoration-thickness: 3px;
+		-webkit-text-decoration-thickness: 3px;
 	}
 </style>
