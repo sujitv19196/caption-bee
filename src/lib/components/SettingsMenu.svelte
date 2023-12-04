@@ -6,11 +6,11 @@
 	const defaultSettings: { [key: string]: any } = {
 		highAccuracyThreshold: {
 			name: 'High accuracy threshold',
-			value: 0.85
+			value: 0.9
 		},
 		mediumAccuracyThreshold: {
 			name: 'Medium accuracy threshold',
-			value: 0.75
+			value: 0.8
 		},
 		quickEdit: {
 			name: 'Quick Edit',
