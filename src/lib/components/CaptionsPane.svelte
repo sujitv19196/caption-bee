@@ -170,6 +170,7 @@
 								class="current-caption"
 								bind:value={$currentCaptionText}
 								spellcheck="true"
+								rows="2"
 								use:focus
 							/>
 						{:else}
@@ -226,7 +227,7 @@
 	}
 	.current-caption {
 		width: calc(100% - 250px);
-		height: 1.2em;
+		height: 2em;
 		background: none;
 		border: none;
 		font-family: Arial;

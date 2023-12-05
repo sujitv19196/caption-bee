@@ -3,7 +3,7 @@
         "startTime": 1.0,
         "endTime": 8.0,
         "text": "According to all loaned laws of aviation,",
-        "score": 0.9
+        "score": 0.7
     },
     {
         "startTime": 11.0,
@@ -39,7 +39,7 @@
         "startTime": 51.0,
         "endTime": 56.0,
         "text": "Garry, breakfast is ready!",
-        "score": 0.91
+        "score": 0.80
     },
     {
         "startTime": 58.0,
@@ -51,7 +51,7 @@
         "startTime": 61.0,
         "endTime": 65.0,
         "text": "Hello...Garry, Adam...can you believe this is happening",
-        "score": 0.9
+        "score": 0.88
     },
     {
         "startTime": 66.0,
@@ -86,7 +86,7 @@
     {
         "startTime": 81.0,
         "endTime": 84.0,
-        "text": "We're very proud of you, son and a perfect resort card. All B's very proud.",
+        "text": "We're very proud of you, son and a perfect resort card. All bees very proud.",
         "score": 0.85
     },
     {
@@ -104,127 +104,121 @@
     {
         "startTime": 89.0,
         "endTime": 92.0,
-        "text": "Oh that's me, wave to us, we will be in row 118,000",
-        "score": 0.95
+        "text": "Share with us, we'll still be in row 118,000",
+        "score": 0.66
     },
     {
         "startTime": 93.0,
         "endTime": 95.0,
-        "text": "May, I told you stop trying in baby",
+        "text": "Larry, I told you stop crying in the house",
         "score": 0.84
     },
     {
-        "startTime": 96.0,
-        "endTime": 97.0,
-        "text": "Hey Adam, Hey bary",
-        "score": 0.9
+        "startTime": 117.408,
+        "endTime": 119.171,
+        "text": "Hey, Adam.",
+        "score": 1
     },
     {
-        "startTime": 98.0,
-        "endTime": 101.0,
-        "text": "Is that Fuzz Jill a little, it's a special day.",
-        "score": 0.9
+        "startTime": 119.243,
+        "endTime": 122.644,
+        "text": "Is that fuzz gel?\nA little. Special day, graduation.",
+        "score": 0.8
     },
     {
-        "startTime": 102.0,
-        "endTime": 105.0,
-        "text": "Finally graduating. I never thought I'd make it these days.",
+        "startTime": 122.713,
+        "endTime": 124.112,
+        "text": "Never thought I'd make it.",
+        "score": 1
+    },
+    {
+        "startTime": 124.181,
+        "endTime": 126.672,
+        "text": "Three days grade school,\nthree days high school.",
+        "score": 1
+    },
+    {
+        "startTime": 126.75,
+        "endTime": 127.944,
+        "text": "Those were awkward.",
+        "score": 1
+    },
+    {
+        "startTime": 128.018,
+        "endTime": 132.182,
+        "text": "Three days college. I'm glad I took\na day and hitchhiked around the glive.",
+        "score": 0.8
+    },
+    {
+        "startTime": 132.256,
+        "endTime": 134.019,
+        "text": "You did come back different.",
+        "score": 1
+    },
+    {
+        "startTime": 134.088,
+        "endTime": 137.755,
+        "text": "Hi, Barry.\nHi Artie, growing a mustache? Looks good.",
+        "score": 1
+    },
+    {
+        "startTime": 137.696,
+        "endTime": 140.459,
+        "text": "Hear about Frankie?\nYeah.",
+        "score": 1
+    },
+    {
+        "startTime": 140.531,
+        "endTime": 143.398,
+        "text": "You going to his humerous?\nNo, I'm not going to",
         "score": 0.85
     },
     {
-        "startTime": 106.0,
-        "endTime": 107.0,
-        "text": "Of grade school.",
-        "score": 0.9
+        "startTime": 143.467,
+        "endTime": 145.662,
+        "text": "Everybody knows,\nstring someone, you die.",
+        "score": 0.88
     },
     {
-        "startTime": 108.0,
-        "endTime": 110.0,
-        "text": "Three days of high school. This was so awkward.",
-        "score": 0.9
+        "startTime": 145.736,
+        "endTime": 148.33,
+        "text": "Don't taste it on a silo.\nSuch a haugty.",
+        "score": 0.64
     },
     {
-        "startTime": 111.0,
-        "endTime": 113.0,
-        "text": "Three days of college.",
-        "score": 0.91
+        "startTime": 148.405,
+        "endTime": 150.93,
+        "text": "I guess he could have\njust gotten out of the way.",
+        "score": 1
     },
     {
-        "startTime": 114.0,
-        "endTime": 118.0,
-        "text": "I'm glad I took off one day in the middle and just zigzagged around live. You didn't shun back indifferent.",
-        "score": 0.70
+        "startTime": 158.449,
+        "endTime": 162.078,
+        "text": "I love this incorporating\nan amusement park into our day.",
+        "score": 1
     },
     {
-        "startTime": 119.0,
-        "endTime": 121.0,
-        "text": "Hi Bary, Hey Artie",
-        "score": 0.94
+        "startTime": 162.152,
+        "endTime": 164.416,
+        "text": "That's why we don't need vacations.",
+        "score": 1
     },
     {
-        "startTime": 122.0,
-        "endTime": 124.0,
-        "text": "Growing a mustache, looks good",
-        "score": 0.94
+        "startTime": 170.227,
+        "endTime": 174.391,
+        "text": "Boy, quite a trip of pump...\nunder the circumstances.",
+        "score": 0.88
     },
     {
-        "startTime": 125.0,
-        "endTime": 127.0,
-        "text": "Hey did you fear about lanky",
-        "score": 0.79
-    },
-    {
-        "startTime": 128.0,
-        "endTime": 131.0,
-        "text": "Yeah, not going to his funeral",
-        "score": 0.94
-    },
-    {
-        "startTime": 132.0,
-        "endTime": 136.0,
-        "text": "Everyone knew, You think someone, you die, you don't waste it on a funeral. He was such a hotty.",
-        "score": 0.77
-    },
-    {
-        "startTime": 137.0,
-        "endTime": 140.0,
-        "text": "Yeah, I guess he could have just gotten out of the way.  Who?",
-        "score": 0.9
-    },
-    {
-        "startTime": 141.0,
-        "endTime": 146.0,
-        "text": "who who, We love this, incorporating the amusement park right into our regular day.",
-        "score": 0.80
-    },
-    {
-        "startTime": 147.0,
-        "endTime": 150.0,
-        "text": "I guess that's why they say we don't leave vacations.",
-        "score": 0.91
-    },
-    {
-        "startTime": 151.0,
-        "endTime": 155.0,
-        "text": "Boy, quite a bit of thump under the circumstances.",
-        "score": 0.87
-    },
-    {
-        "startTime": 156.0,
-        "endTime": 158.0,
+        "startTime": 178.068,
+        "endTime": 179.332,
         "text": "Well, Adam, today we are men.",
-        "score": 0.92
+        "score": 1
     },
     {
-        "startTime": 159.0,
-        "endTime": 160.0,
-        "text": "We Arbys men.",
-        "score": 0.78
-    },
-    {
-        "startTime": 161.0,
-        "endTime": 163.0,
-        "text": "Amen. Hallelujah. Rufus.",
-        "score": 0.85
+        "startTime": 179.332,
+        "endTime": 181.332,
+        "text": "Bee-men.\nAmen! Nice to see ya!",
+        "score": 0.84
     }
 ]

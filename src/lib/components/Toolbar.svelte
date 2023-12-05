@@ -13,6 +13,7 @@
 	let endTime: number;
 	let lowerBound: number;
 	let upperBound: number;
+	let boundTolerance: number = 2;
 	let duration: number;
 	let captionDuration: number;
 	let range: number[];
@@ -29,6 +30,8 @@
 		prevCaption = currentCaption.previous;
 		lowerBound = prevCaption?.endTime ?? 0;
 		upperBound = nextCaption?.startTime ?? editor.video.duration ?? lowerBound;
+		lowerBound -= boundTolerance;
+		upperBound += boundTolerance;
 		duration = upperBound - lowerBound;
 
 		updateRange();
