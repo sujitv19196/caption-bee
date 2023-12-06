@@ -2,7 +2,7 @@
 	import CaptionedVideo from '$lib/components/CaptionedVideo.svelte';
 	import CaptionsPane from '$lib/components/CaptionsPane.svelte';
 	import SettingsMenu from '$lib/components/SettingsMenu.svelte';
-	import { Caption } from '$lib/utils/captions';
+	import { Caption } from '$lib/utils/caption';
 	import { Editor } from '$lib/utils/editor';
 	import { currentTheme } from '$lib/utils/stores';
 	import type { PageData } from './$types';

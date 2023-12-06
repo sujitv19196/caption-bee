@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import RangeSlider from 'svelte-range-slider-pips';
-	import type { Caption } from '$lib/utils/captions';
+	import type { Caption } from '$lib/utils/caption';
 	import type { Editor } from '$lib/utils/editor';
 
 	export let editor: Editor;
+
+	const minBoundDistance = 2;
+	const maxBoundDistance = 8;
 
 	let currentCaption = editor.currentCaption;
 	let nextCaption: Caption | null;
@@ -13,7 +16,6 @@
 	let endTime: number;
 	let lowerBound: number;
 	let upperBound: number;
-	let boundTolerance: number = 2;
 	let duration: number;
 	let captionDuration: number;
 	let range: number[];
@@ -28,13 +30,20 @@
 		currentCaption = editor.currentCaption;
 		nextCaption = currentCaption.next;
 		prevCaption = currentCaption.previous;
-		lowerBound = prevCaption?.endTime ?? 0;
-		upperBound = nextCaption?.startTime ?? editor.video.duration ?? lowerBound;
-		lowerBound -= boundTolerance;
-		upperBound += boundTolerance;
-		duration = upperBound - lowerBound;
 
 		updateRange();
+		lowerBound = Math.max(
+			Math.min(prevCaption?.endTime ?? 0, startTime - minBoundDistance),
+			startTime - maxBoundDistance,
+			0
+		);
+		upperBound = Math.min(
+			Math.max(nextCaption?.startTime ?? 0, endTime + minBoundDistance),
+			endTime + maxBoundDistance,
+			editor.video.duration
+		);
+		console.log(upperBound + ' - ' + lowerBound);
+		duration = upperBound - lowerBound;
 		range = [startTime, endTime];
 
 		editor.video.currentTime = lowerBound + 0.01;
@@ -131,7 +140,7 @@
 
 	function togglePlay() {
 		if (editor.video.paused && editor.video.currentTime >= upperBound) {
-			editor.video.currentTime = lowerBound;
+			editor.video.currentTime = lowerBound + 0.01;
 		}
 		editor.video.paused = !editor.video.paused;
 	}
@@ -171,13 +180,22 @@
 			/>
 		</div>
 
-		<button class="slider-button clickable" on:click={togglePlay}>
+		<button class="slider-button clickable tooltip" on:click={togglePlay}>
 			{#if !paused}
 				<i class="fa fa-pause" aria-hidden="true" />
+				<span class="tooltip-top">
+					Press <span class="emphasis">Enter</span> to pause
+				</span>
 			{:else if currentTime >= upperBound}
 				<i class="fa fa-repeat" aria-hidden="true" />
+				<span class="tooltip-top">
+					Press <span class="emphasis">Enter</span> to play from caption start
+				</span>
 			{:else}
 				<i class="fa fa-play" aria-hidden="true" />
+				<span class="tooltip-top">
+					Press <span class="emphasis">Enter</span> to play from caption start
+				</span>
 			{/if}
 		</button>
 
@@ -195,10 +213,23 @@
 	<div class="toolbar-button-row">
 		<button class="toolbar-button clickable" on:click={reset}>reset</button>
 
-		<button class="toolbar-button clickable" style="margin-left: auto;" on:click={previous}>
+		<button class="toolbar-button clickable tooltip" style="margin-left: auto;" on:click={previous}>
 			previous
+			<span class="tooltip-bottom">
+				Keyboard shortcut:
+				<span class="emphasis">Ctrl</span> +
+				<span class="emphasis">Shift</span> +
+				<span class="emphasis">Enter</span>
+			</span>
 		</button>
-		<button class="accent-button clickable" on:click={next}>done</button>
+		<button class="accent-button clickable tooltip" on:click={next}>
+			done
+			<span class="tooltip-bottom">
+				Keyboard shortcut:
+				<span class="emphasis">Ctrl</span> +
+				<span class="emphasis">Enter</span>
+			</span>
+		</button>
 	</div>
 </div>
 
@@ -257,5 +288,53 @@
 	.accent-button {
 		background-color: var(--color-accent);
 		color: var(--color-accent-text);
+	}
+
+	.tooltip {
+		position: relative;
+		border-bottom: 1px dotted black;
+	}
+	.tooltip .tooltip-top,
+	.tooltip .tooltip-bottom {
+		opacity: 0;
+		width: 120px;
+		padding: 8px;
+		background-color: black;
+		font-size: 12px;
+		color: var(--color-fg-2);
+		text-align: center;
+		border-radius: 5px;
+		position: absolute;
+		z-index: 1;
+		left: 50%;
+		transform: translate(-50%, 0);
+		transition: opacity 0.05s linear;
+	}
+	.tooltip .tooltip-top {
+		bottom: 150%;
+	}
+	.tooltip .tooltip-bottom {
+		top: 150%;
+	}
+	.tooltip .tooltip-top::after,
+	.tooltip .tooltip-bottom::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		margin-left: -5px;
+		border-width: 5px;
+		border-style: solid;
+	}
+	.tooltip .tooltip-top::after {
+		top: 100%;
+		border-color: black transparent transparent transparent;
+	}
+	.tooltip .tooltip-bottom::after {
+		bottom: 100%;
+		border-color: transparent transparent black transparent;
+	}
+	.tooltip:hover .tooltip-top,
+	.tooltip:hover .tooltip-bottom {
+		opacity: 1;
 	}
 </style>

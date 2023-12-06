@@ -1,6 +1,8 @@
 import { get, writable, type Writable } from 'svelte/store';
+import type { Analytics } from "./analytics";
 
 export class VideoController {
+    private _analytics: Analytics;
     private _duration: number;
     private _currentTimeStore: Writable<number>;
     private _pausedStore: Writable<boolean>;
@@ -8,8 +10,9 @@ export class VideoController {
     private _playUntil: number | null;
     private _playbackListeners: ((paused: boolean) => void)[];
 
-    constructor() {
-        this._duration = 0;
+    constructor(analytics: Analytics) {
+        this._analytics = analytics;
+        this._duration = 1e9;
         this._currentTimeStore = writable(0);
         this._pausedStore = writable(true);
         this._playbackRateStore = writable(1);
@@ -62,6 +65,7 @@ export class VideoController {
 
     set paused(value: boolean) {
         this._pausedStore.set(value);
+        this._analytics.setPaused(value);
     }
 
     get pausedStore(): Writable<boolean> {

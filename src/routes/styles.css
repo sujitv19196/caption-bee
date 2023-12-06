@@ -3,6 +3,7 @@
 :root {
 	--color-accent: rgb(170, 2, 250);
 	--color-accent-text: rgb(255, 255, 255);
+	--color-emphasis: rgb(255, 234, 0);
 	--range-handle: var(--color-accent);
 	--range-handle-focus: var(--color-accent);
 }
@@ -53,6 +54,10 @@ body {
 	min-height: 100vh;
 	margin: 0;
 	font-family: Arial;
+}
+
+.emphasis {
+	color: var(--color-emphasis);
 }
 
 .select {

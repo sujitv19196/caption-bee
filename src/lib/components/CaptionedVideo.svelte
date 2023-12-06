@@ -14,40 +14,19 @@
 
 	let video: HTMLVideoElement;
 
-	let totalCaptions = 0;
+	let completedCaptions = 0;
 	let remainingCaptions = 0;
-	let finishedCaptions = 0;
 	let skippedCaptions = 0;
 
-	function getRemainingCaptions() {
-		totalCaptions = editor.captions.length;
-		remainingCaptions = totalCaptions - editor.currentIdx;
+	function updateProgress() {
+		completedCaptions = editor.completedCaptions;
+		remainingCaptions = editor.remainingCaptions;
+		skippedCaptions = editor.skippedCaptions;
 	}
-
-	function getFinishedCaptions() {
-		finishedCaptions = editor.currentIdx;
-	}
-
-	function getSkippedCaptions() {
-		//done button is clicked
-		if (editor.currentIdx > editor.prevIdx) {
-			if (editor.currentIdx - editor.prevIdx > 1)
-				skippedCaptions = skippedCaptions + (editor.currentIdx - editor.prevIdx - 1);
-		}
-		//prev button is clicked
-		if (editor.prevIdx > editor.currentIdx) {
-			if (editor.prevIdx - editor.currentIdx > 1) {
-				if (skippedCaptions - (editor.prevIdx - editor.currentIdx - 1) >= 0)
-					skippedCaptions = skippedCaptions - (editor.prevIdx - editor.currentIdx - 1);
-				else skippedCaptions = 0;
-			}
-		}
-	}
+	updateProgress();
 
 	editor.addNavigationListener(() => {
-		getRemainingCaptions();
-		getFinishedCaptions();
-		getSkippedCaptions();
+		updateProgress();
 	});
 
 	onMount(() => {
@@ -56,9 +35,6 @@
 		for (const caption of editor.captions) {
 			track.addCue(caption.vttCue);
 		}
-		getRemainingCaptions();
-		getFinishedCaptions();
-		getSkippedCaptions();
 	});
 </script>
 
@@ -78,12 +54,12 @@
 	</video>
 	<div class="statistics-container">
 		<div class="statistics-box">
-			<p class="statistics-label">Remaining:</p>
-			<p style="color: var(--medium-confidence)">{remainingCaptions}</p>
+			<p class="statistics-label">Completed:</p>
+			<p style="color: var(--edited)">{completedCaptions}</p>
 		</div>
 		<div class="statistics-box">
-			<p class="statistics-label">Finished:</p>
-			<p style="color: var(--edited)">{finishedCaptions}</p>
+			<p class="statistics-label">Remaining:</p>
+			<p style="color: var(--medium-confidence)">{remainingCaptions}</p>
 		</div>
 		<div class="statistics-box">
 			<p class="statistics-label">Skipped:</p>

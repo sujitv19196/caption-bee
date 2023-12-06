@@ -4,7 +4,7 @@
 	import type { Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import Toolbar from './Toolbar.svelte';
-	import type { Caption } from '$lib/utils/captions';
+	import type { Caption } from '$lib/utils/caption';
 	import type { Editor } from '$lib/utils/editor';
 
 	export let editor: Editor;
@@ -14,6 +14,7 @@
 	const currentCaptionBottomMargin = 25;
 	const toolbarHeight = 150;
 	const minMiddleZoneHeight = toolbarHeight + captionHeight + currentCaptionBottomMargin;
+
 	let height: number;
 	let numVisibleCaptions: number;
 	let middleZoneY: number;
@@ -215,8 +216,8 @@
 		align-items: center;
 	}
 	.caption-timestamp {
-		padding-left: 50px;
 		width: 100px;
+		padding-left: 50px;
 		font-size: 14px;
 		color: var(--color-fg-3);
 	}
@@ -228,6 +229,7 @@
 	.current-caption {
 		width: calc(100% - 250px);
 		height: 2em;
+		margin-top: 0.8em;
 		background: none;
 		border: none;
 		font-family: Arial;
@@ -236,12 +238,12 @@
 	}
 	.current-caption-speaker {
 		width: 100px;
+		margin-right: 1%;
 		background: none;
 		border: none;
 		font-family: Arial;
 		font-size: 18px;
-		color: white;
-		margin-right: 1%;
+		color: var(--color-fg-1);
 	}
 	.toolbar-container {
 		left: 150px;
