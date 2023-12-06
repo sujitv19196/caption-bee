@@ -295,6 +295,7 @@
 	}
 	.tooltip .tooltip-top,
 	.tooltip .tooltip-bottom {
+		visibility: hidden;
 		opacity: 0;
 		width: 120px;
 		padding: 8px;
@@ -334,6 +335,7 @@
 	}
 	.tooltip:hover .tooltip-top,
 	.tooltip:hover .tooltip-bottom {
+		visibility: visible;
 		opacity: 1;
 	}
 </style>
