@@ -113,7 +113,7 @@
 					editor.next();
 				}
 			} else if (editor.video.paused) {
-				editor.video.currentTime = Math.max(0, editor.currentCaption.startTime - 2);
+				editor.video.currentTime = Math.max(0, editor.currentCaption.startTime - 1.99);
 				editor.video.paused = false;
 			} else {
 				editor.video.paused = true;

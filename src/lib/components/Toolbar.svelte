@@ -301,7 +301,7 @@
 		padding: 8px;
 		background-color: black;
 		font-size: 12px;
-		color: var(--color-fg-2);
+		color: rgb(210, 210, 210);
 		text-align: center;
 		border-radius: 5px;
 		position: absolute;
