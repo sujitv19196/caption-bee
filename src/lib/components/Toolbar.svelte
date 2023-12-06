@@ -292,7 +292,6 @@
 
 	.tooltip {
 		position: relative;
-		border-bottom: 1px dotted black;
 	}
 	.tooltip .tooltip-top,
 	.tooltip .tooltip-bottom {
