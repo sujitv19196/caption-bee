@@ -33,7 +33,8 @@
 		const track = video.addTextTrack('captions', 'Captions', 'en');
 		track.mode = 'showing';
 		for (const caption of editor.captions) {
-			track.addCue(caption.vttCue);
+			caption.initialize();
+			track.addCue(caption.vttCue as VTTCue);
 		}
 	});
 </script>

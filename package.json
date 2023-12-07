@@ -35,6 +35,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-static": "^2.0.3",
-		"code": "^5.2.4"
+		"code": "^5.2.4",
+		"gh-pages": "^6.1.0"
 	}
 }

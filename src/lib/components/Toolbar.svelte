@@ -42,7 +42,6 @@
 			endTime + maxBoundDistance,
 			editor.video.duration
 		);
-		console.log(upperBound + ' - ' + lowerBound);
 		duration = upperBound - lowerBound;
 		range = [startTime, endTime];
 

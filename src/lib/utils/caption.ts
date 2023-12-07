@@ -8,6 +8,12 @@ export interface SerializedCaption {
     score: number;
 }
 
+interface VTTCuePlaceholder {
+    startTime: number;
+    endTime: number;
+    text: string;
+}
+
 export class Caption {
     private _startTimeStore: Writable<number>;
     private _endTimeStore: Writable<number>;
@@ -18,7 +24,7 @@ export class Caption {
     private _edited: boolean;
     private _next: Caption | null = null;
     private _previous: Caption | null = null;
-    private _vttCue: VTTCue;
+    private _vttCue: VTTCuePlaceholder;
 
     get startTime(): number {
         return get(this._startTimeStore);
@@ -92,7 +98,7 @@ export class Caption {
         return this._previous;
     }
 
-    get vttCue(): VTTCue {
+    get vttCue(): VTTCuePlaceholder {
         return this._vttCue;
     }
 
@@ -104,8 +110,15 @@ export class Caption {
         this._originalText = serialized.originalText ?? serialized.text;
         this._score = serialized.score;
         this._edited = false;
-        this._vttCue = new VTTCue(this.startTime, this.endTime, this.text);
+        this._vttCue = {
+            startTime: serialized.startTime,
+            endTime: serialized.endTime,
+            text: serialized.text
+        }
+    }
 
+    initialize() {
+        this._vttCue = new VTTCue(this.startTime, this.endTime, this.text);
         this._startTimeStore.subscribe((value: number) => {
             this._vttCue.startTime = value;
         })
@@ -113,14 +126,14 @@ export class Caption {
             this._vttCue.endTime = value;
         })
         this._textStore.subscribe((value: string) => {
-            if (this.speaker != "") {
+            if (this.speaker != '') {
                 this._vttCue.text = `[${this.speaker}] ${value}`
             } else {
                 this._vttCue.text = value
             }
         })
         this._speakerName.subscribe((value: string) => {
-            if (value != "") {
+            if (value != '') {
                 this._vttCue.text = `[${value}] ${this.text}`
             } else {
                 this._vttCue.text = this.text

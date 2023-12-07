@@ -104,24 +104,6 @@
 		oldIdx = currentIdx;
 	});
 
-	document.addEventListener('keydown', (e: KeyboardEvent) => {
-		if (e.key === 'Enter') {
-			if (e.ctrlKey || e.metaKey) {
-				if (e.shiftKey) {
-					editor.previous();
-				} else {
-					editor.next();
-				}
-			} else if (editor.video.paused) {
-				editor.video.currentTime = Math.max(0, editor.currentCaption.startTime - 1.99);
-				editor.video.paused = false;
-			} else {
-				editor.video.paused = true;
-			}
-			e.preventDefault();
-		}
-	});
-
 	function focus(el: HTMLInputElement | HTMLTextAreaElement) {
 		el.focus();
 	}
@@ -132,6 +114,24 @@
 		captionsContainer.addEventListener('scroll', () => {
 			if (captionsContainer.scrollTop != 0) {
 				captionsContainer.scrollTo(0, 0);
+			}
+		});
+
+		document.addEventListener('keydown', (e: KeyboardEvent) => {
+			if (e.key === 'Enter') {
+				if (e.ctrlKey || e.metaKey) {
+					if (e.shiftKey) {
+						editor.previous();
+					} else {
+						editor.next();
+					}
+				} else if (editor.video.paused) {
+					editor.video.currentTime = Math.max(0, editor.currentCaption.startTime - 1.99);
+					editor.video.paused = false;
+				} else {
+					editor.video.paused = true;
+				}
+				e.preventDefault();
 			}
 		});
 	});
